@@ -284,48 +284,8 @@ void inicializaVetorAleatorioArvore(vector<elementoArvore> &elemento, int size)
         elemento[j].posicaoBinario=j;
     }
 }
-void gravarInserir(int *comparacoes,int qual,double *tempo){
-    ofstream arquivotxt("saida.txt",ios::app);
-    
-    
-    if(qual == 0){           // ARVORE B
-        arquivotxt << "**************************************************************** "  << endl;
-        arquivotxt << "**********************   Arvore B - MEDIA  *********************" << endl;
-        arquivotxt << "**************************************************************** " <<  endl;   
-        arquivotxt << "Media de comparacoes na insercao da arvore b foi de: " << *comparacoes << endl;
-        arquivotxt << "Tempo de insercao da arvore b foi de: " << *tempo << "segundos." << endl;
-    }else{                   // ARVORE VERMELHO E PRETO
-        arquivotxt << "*******************************************************************************"  << endl;
-        arquivotxt << "**********************   Arvore Vermelho - Preto (MEDIA)  *********************" << endl;
-        arquivotxt << "*******************************************************************************" <<  endl;
-        arquivotxt << "Media de comparacoes na insercao da arvore vermelho e preto foi de: " << *comparacoes << endl;
-        arquivotxt << "Tempo de insercao da arvore vermelho e preto foi de: " << *tempo << "segundos." << endl;
 
-    }
-    arquivotxt.close();
-}
-void gerartxtVP(desempenhoArvore *desempenho,bool media){
-    ofstream arquivotxt("saida.txt",ios::app);
-    arquivotxt << "***********************************************************************"  << endl;
-    arquivotxt << "**********************   Arvore Vermelho - Preto  *********************" << endl;
-    arquivotxt << "***********************************************************************" <<  endl;
-    
-    if(media == false){
-        for (int i = 0; i < 100; i++){
-        arquivotxt << "Comparações ate achar o artista: " << desempenho[i].numComparacoes << endl;
-        arquivotxt << "Tempo de busca: " << desempenho[i].tempo << " em milissegundos" << endl;
-        arquivotxt <<endl<<endl;   
-        }
-    }else{
-        arquivotxt << "Comparações media ate achar os 100 artista: " << desempenho->numComparacoes << endl;
-        arquivotxt << "Tempo de busca medio dos 100 artistas: " << desempenho->tempo << " em milissegundos" << endl;
-        arquivotxt <<endl<<endl;   
-    }
-    
-    arquivotxt.close();
 
-    
-}
 
 void benchmarkArvoreVP(){
     vector<elementoArvore> elementos;
