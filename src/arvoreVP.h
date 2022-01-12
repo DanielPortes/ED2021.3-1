@@ -298,9 +298,6 @@ void benchmarkArvoreVP(){
     string id;
     arvoreVP arvore;
     for (int i = 0; i <A;i++){  //inserção
-        if(i==0){
-            cout<<elementos[i].id<<endl;
-        }
         arvore.inserir(&elementos[i],&comparacoes);
     }
     cout <<"inserção concluida,com numero de comapracoes igua a:"<<comparacoes<<endl;
