@@ -325,7 +325,7 @@ void benchmarkArvoreVP(){
                 imprimeReviewEspecifica(aux.posicaoBinario,arquivoBinario);
             }
             else{
-                cout<<"id nao encontrada"<<endl;
+                cout<<"id nao encontrada com numero de comparacoes igual a:";
                 cout<<comparacoesBusca<<endl;
             }
 
