@@ -19,7 +19,6 @@ void heapSort(std::vector<Review>& reviews, int n, Timer* timer)
 		swap(reviews[0], reviews[i]);
 		heapify(reviews, i, 0, timer);
 	}
-
 }
 
 void heapify(vector<Review>& reviews, int n, int i, Timer* timer)
@@ -47,76 +46,54 @@ void heapify(vector<Review>& reviews, int n, int i, Timer* timer)
 	}
 }
 
-void InsertionSort(vector<Review>& vet, size_t inicio, size_t fim, Timer* timer)
+
+pair<int, int> partition(vector<Review> &vet, size_t inicio, size_t fim, Timer *timer)
 {
-	for (int i = inicio + 1; i < fim + 1; i++)
-	{
-		timer->acrecentaComparacoes();
-		Review val = vet[i];
-		int j = i;
-		while (j > inicio && vet[j - 1].upvotes > val.upvotes)
-		{
-			timer->acrecentaComparacoes();
-			vet[j] = vet[j - 1];
-			j -= 1;
-		}
-		timer->acrecentaSwaps();
-		vet[j] = val;
-	}
-}
+    int mid = inicio;
+    int pivot = vet[fim].upvotes;
 
-int partition(vector<Review>& vet, size_t inicio, size_t fim, Timer* timer)
-{
-	int pivot = vet[fim].upvotes;
-	int i = inicio, j = inicio;
+    while (mid <= fim)
+    {
+        if (vet[mid].upvotes < pivot)
+        {
+            swap(vet[inicio], vet[mid]);
+            ++inicio, ++mid;
+        }
+        else if (vet[mid].upvotes > pivot)
+        {
+            swap(vet[mid], vet[fim]);
+            --fim;
+        }
+        else
+        {
+            ++mid;
+        }
+    }
 
-	for (int i = inicio; i < fim; i++)
-	{
-		timer->acrecentaComparacoes(); // for
-		timer->acrecentaComparacoes(); // if
-		if (vet[i].upvotes < pivot)
-		{
-			Review temp = vet[i];
-			vet[i] = vet[j];
-			vet[j] = temp;
-			j += 1;
-			timer->acrecentaSwaps();
-		}
-	}
-
-	Review temp = vet[j];
-	vet[j] = vet[fim];
-	vet[fim] = temp;
-	timer->acrecentaSwaps();
-	return j;
+    return make_pair(inicio - 1, mid);
 }
 
 void quickSort(vector<Review>& vet, size_t inicio, size_t fim, Timer* timer)
 {
-	while (inicio < fim)
-	{
-		timer->acrecentaComparacoes(); // while
-		timer->acrecentaComparacoes(); // if
-		if (fim - inicio + 1 < 10)
-		{
-			InsertionSort(vet, inicio, fim, timer);
-			break;
-		}
+    if (inicio >= fim)
+    {
+        return;
+    }
 
-		int pivot = partition(vet, inicio, fim, timer);
+    if (inicio - fim == 1)
+    {
+        if (vet[inicio].upvotes < vet[fim].upvotes)
+        {
+            swap(vet[inicio], vet[fim]);
+        }
+        return;
+    }
 
-		timer->acrecentaComparacoes();
-		if (pivot - inicio < fim - pivot)
-		{
-			quickSort(vet, inicio, pivot - 1, timer);
-			inicio = pivot + 1;
-		}
-		else
-		{
-			quickSort(vet, pivot + 1, fim, timer);
-			fim = pivot - 1;
-		}
-	}
+    pair<int, int> pivot = partition(vet, inicio, fim, nullptr);
+
+    quickSort(vet, inicio, pivot.first, nullptr);
+
+    quickSort(vet, pivot.second, fim, nullptr);
 }
 
 void quickSortHash(vector<pair<string, int>>& vetor, int inicio, int fim)
