@@ -289,7 +289,7 @@ void inicializaVetorAleatorioArvore(vector<elementoArvore> &elemento, int size)
 
 void benchmarkArvoreVP(){
     vector<elementoArvore> elementos;
-    inicializaVetorAleatorioArvore(elementos,A);
+    inicializaVetorAleatorioArvore(elementos,A); //inicializando vetor de elementos
     int comparacoes=0;
     int comparacoesBusca=0;
     int entrada=0;
@@ -297,17 +297,19 @@ void benchmarkArvoreVP(){
     elementoArvore aux;
     string id;
     arvoreVP arvore;
-    for (int i = 0; i <A;i++){
+    for (int i = 0; i <A;i++){  //inserção
         if(i==0){
             cout<<elementos[i].id<<endl;
         }
         arvore.inserir(&elementos[i],&comparacoes);
     }
-    cout <<"inserção concluida"<<endl;
-    while(true){
+    cout <<"inserção concluida,com numero de comapracoes igua a:"<<comparacoes<<endl;
+
+    while(true){ //busca 
         cout<<"deseja procurar uma id?  1-sim || 2-nao"<<endl;
         cin>>entrada;
         if(entrada==1){
+            comparacoesBusca=0;
             cout<<"digite a id desejada"<<endl;
             cin>>id;
             aux=arvore.buscar(id,&comparacoesBusca,&conseguiu);
@@ -319,10 +321,12 @@ void benchmarkArvoreVP(){
                     cerr << "ERRO: arquivo nao pode ser aberto na funcao inicializaVetor()";
                     assert(false);
                 }
+                cout<<endl<<"elemento encontrado com numero de comparacoes igual a :"<<comparacoesBusca<<endl;
                 imprimeReviewEspecifica(aux.posicaoBinario,arquivoBinario);
             }
             else{
                 cout<<"id nao encontrada"<<endl;
+                cout<<comparacoesBusca<<endl;
             }
 
         }
