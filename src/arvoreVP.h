@@ -1,7 +1,11 @@
 #include <iostream>
 #include "noVP.h"
 //#include "struct.h"
-
+#include <time.h>
+#include "leitura.h"
+#include"parametros.h"
+#include <cassert>
+#define A 1000000
 class arvoreVP
 {
 private:
@@ -30,7 +34,7 @@ public:
             while(linkAux != NULL)
             {
                 *comparacoes = *comparacoes + 1;
-                if(linkAux->info->posicaoBinario->review_id > x->posicaoBinario->review_id)
+                if(linkAux->info->id > x->id)
                 {
                     if(linkAux->esq == NULL)
                     {
@@ -83,7 +87,7 @@ public:
                     z->pai->cor = "PRETO";
                     tio->cor = "PRETO";
                     vo->cor = "VERMELHO";
-                    if(vo->info->posicaoBinario->review_id != raiz->info->posicaoBinario->review_id)
+                    if(vo->info->id != raiz->info->id)
                     {
                         z = vo;
                     }
@@ -102,7 +106,7 @@ public:
                     vo->cor = "VERMELHO";
                     rotacaoDireita(vo);
                     *comparacoes = *comparacoes + 1;
-                    if(vo->info->posicaoBinario->review_id != raiz->info->posicaoBinario->review_id)
+                    if(vo->info->id != raiz->info->id)
                     {
                         z = vo;
                     }
@@ -124,7 +128,7 @@ public:
                     tio->cor = "PRETO";
                     vo->cor = "VERMELHO";
                     *comparacoes = *comparacoes + 1;
-                    if(vo->info->posicaoBinario->review_id != raiz->info->posicaoBinario->review_id)
+                    if(vo->info->id != raiz->info->id)
                     {
                         z = vo;
                     }
@@ -143,7 +147,7 @@ public:
                     vo->cor = "VERMELHO";
                     rotacaoEsquerda(vo);
                     *comparacoes = *comparacoes + 1;
-                    if(vo->info->posicaoBinario->review_id != raiz->info->posicaoBinario->review_id)
+                    if(vo->info->id != raiz->info->id)
                     {
                         z = vo;
                     }
@@ -157,23 +161,25 @@ public:
         raiz->cor = "PRETO";
     }
 
-    noVP* buscar(string x,int *comparacoes)
+    elementoArvore buscar(string x,int *comparacoes,bool *conseguiu)
     {
         noVP* aux = GetRaiz();
         *comparacoes = *comparacoes + 1;
-
+        elementoArvore nulo;
         if(aux == NULL)
         {
-            return NULL;
+            *conseguiu=false;
+            return nulo;
         }
         while(aux)
         {   
             *comparacoes = *comparacoes + 1;
-            if(x == aux->info->posicaoBinario->review_id)
+            if(x == aux->info->id)
             {
-                return aux;
+                *conseguiu=true;
+                return *aux->info;
             }
-            else if(x < aux->info->posicaoBinario->review_id)
+            else if(x < aux->info->id)
             {
                 aux = aux->esq;
             }
@@ -182,7 +188,8 @@ public:
                 aux = aux->dir;
             }
         }
-        return NULL;
+        *conseguiu=false;
+        return nulo;
     }
 
     void rotacaoEsquerda(noVP* x)
@@ -258,3 +265,111 @@ public:
         }
     }
 };
+void inicializaVetorAleatorioArvore(vector<elementoArvore> &elemento, int size)
+{
+    fstream arquivoBinario("./saidaBinaria.bin", ios::in | ios::binary);
+    if (!arquivoBinario.is_open())
+    {
+        cerr << "ERRO: arquivo nao pode ser aberto na funcao inicializaVetor()";
+        assert(false);
+    }
+    int aux=0;
+    Review aux2;
+    for (int j = 0; j < size; j++)
+    {
+        elemento.resize(size);
+        aux=retonaNumeroAleatorio(0, reviews_totais);
+        aux2 =retornaReviewEspecifica(aux, arquivoBinario);
+        elemento[j].id = aux2.review_id;
+        elemento[j].posicaoBinario=j;
+    }
+}
+void gravarInserir(int *comparacoes,int qual,double *tempo){
+    ofstream arquivotxt("saida.txt",ios::app);
+    
+    
+    if(qual == 0){           // ARVORE B
+        arquivotxt << "**************************************************************** "  << endl;
+        arquivotxt << "**********************   Arvore B - MEDIA  *********************" << endl;
+        arquivotxt << "**************************************************************** " <<  endl;   
+        arquivotxt << "Media de comparacoes na insercao da arvore b foi de: " << *comparacoes << endl;
+        arquivotxt << "Tempo de insercao da arvore b foi de: " << *tempo << "segundos." << endl;
+    }else{                   // ARVORE VERMELHO E PRETO
+        arquivotxt << "*******************************************************************************"  << endl;
+        arquivotxt << "**********************   Arvore Vermelho - Preto (MEDIA)  *********************" << endl;
+        arquivotxt << "*******************************************************************************" <<  endl;
+        arquivotxt << "Media de comparacoes na insercao da arvore vermelho e preto foi de: " << *comparacoes << endl;
+        arquivotxt << "Tempo de insercao da arvore vermelho e preto foi de: " << *tempo << "segundos." << endl;
+
+    }
+    arquivotxt.close();
+}
+void gerartxtVP(desempenhoArvore *desempenho,bool media){
+    ofstream arquivotxt("saida.txt",ios::app);
+    arquivotxt << "***********************************************************************"  << endl;
+    arquivotxt << "**********************   Arvore Vermelho - Preto  *********************" << endl;
+    arquivotxt << "***********************************************************************" <<  endl;
+    
+    if(media == false){
+        for (int i = 0; i < 100; i++){
+        arquivotxt << "Comparações ate achar o artista: " << desempenho[i].numComparacoes << endl;
+        arquivotxt << "Tempo de busca: " << desempenho[i].tempo << " em milissegundos" << endl;
+        arquivotxt <<endl<<endl;   
+        }
+    }else{
+        arquivotxt << "Comparações media ate achar os 100 artista: " << desempenho->numComparacoes << endl;
+        arquivotxt << "Tempo de busca medio dos 100 artistas: " << desempenho->tempo << " em milissegundos" << endl;
+        arquivotxt <<endl<<endl;   
+    }
+    
+    arquivotxt.close();
+
+    
+}
+
+void benchmarkArvoreVP(){
+    vector<elementoArvore> elementos;
+    inicializaVetorAleatorioArvore(elementos,A);
+    int comparacoes=0;
+    int comparacoesBusca=0;
+    int entrada=0;
+    bool conseguiu=false;
+    elementoArvore aux;
+    string id;
+    arvoreVP arvore;
+    for (int i = 0; i <A;i++){
+        if(i==0){
+            cout<<elementos[i].id<<endl;
+        }
+        arvore.inserir(&elementos[i],&comparacoes);
+    }
+    cout <<"inserção concluida"<<endl;
+    while(true){
+        cout<<"deseja procurar uma id?  1-sim || 2-nao"<<endl;
+        cin>>entrada;
+        if(entrada==1){
+            cout<<"digite a id desejada"<<endl;
+            cin>>id;
+            aux=arvore.buscar(id,&comparacoesBusca,&conseguiu);
+            if(conseguiu){
+                cout<<"elemento presente na arvore,realizando acesso a disco para recuperar todas as informacoes:"<<endl;
+                fstream arquivoBinario("./saidaBinaria.bin", ios::in | ios::binary);
+                if (!arquivoBinario.is_open())
+                {
+                    cerr << "ERRO: arquivo nao pode ser aberto na funcao inicializaVetor()";
+                    assert(false);
+                }
+                imprimeReviewEspecifica(aux.posicaoBinario,arquivoBinario);
+            }
+            else{
+                cout<<"id nao encontrada"<<endl;
+            }
+
+        }
+        else{
+            return;
+        }
+    }
+}
+
+

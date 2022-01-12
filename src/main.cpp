@@ -3,7 +3,7 @@
 #include "leitura.h"
 #include "Timer.h"
 #include <iostream>
-
+#include "arvoreVP.h"
 #include "parametros.h"
 #include "tabelaHash.h"
 
@@ -76,13 +76,7 @@ void menu(const string& caminhoEntrada, vector<Review> &reviews)
             }
             case tabela_Hash:
             {
-                cout << "Digite quantos reviews aleatorios devem ser importados: ";
-                int input = 0; // nao representa tamanho real da tabela, m_tam = N * 1.x
-                cin >> input;
-                vector<pair<string, int>> populares = testaTabelaHash(input);
-                cout << "Digite um valor de N, para imprimir o TOP N versoes mais populares: ";
-                cin >> input;
-                imprimeNMaisFrequentes(populares, input);
+                benchmarkArvoreVP();
                 break;
             }
             case sair:

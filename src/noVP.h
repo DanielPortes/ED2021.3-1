@@ -3,7 +3,10 @@
 #include "leitura.h"
 
 using namespace std;
-
+struct elementoArvore{
+    string id;
+    int posicaoBinario;
+};
 struct noVP {
     elementoArvore *info;
     noVP* esq = NULL;
@@ -11,7 +14,10 @@ struct noVP {
     noVP* pai = NULL;
     string cor;
 };
-struct elementoArvore{
-    string id;
-    Review *posicaoBinario;
+struct desempenhoArvore{
+    int numComparacoesInsere;
+    int numComparacoes;
+    double tempo;
+    string arvore;
+    
 };
