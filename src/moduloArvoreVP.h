@@ -5,6 +5,7 @@
 #include <cassert>
 #define A 1000000
 #include "arvoreVP.h"
+
 void inicializaVetorAleatorioArvore(vector<elementoArvore> &elemento, int size)
 {
     fstream arquivoBinario("./saidaBinaria.bin", ios::in | ios::binary);
@@ -70,14 +71,15 @@ void benchmarkArvoreVP(){
     comparacoes=comparacoes/3;
 
     //-------busca--------
+    
     cout << "Realizando testes de busca..." <<endl;
     h = clock();      // Iniciando o tempo 
     for(int i = 0; i < 3;i++){
         cout << "busca dos 100 elementos,teste numero " <<i+1<<" de 3"<<endl;
         inicializaVetorAleatorioArvore(elementosBusca,100); 
         for(int j = 0; j < 100 ;j++){
-           conseguiu=0;
-            aux=arvore.buscar(id,&comparacoesBusca,&conseguiu);
+           conseguiu=false;
+            aux=arvore.buscar(elementosBusca[j].id,&comparacoesBusca,&conseguiu);
             if(conseguiu==true){
                 achados++;
             }
@@ -91,7 +93,29 @@ void benchmarkArvoreVP(){
     imprimeResultadoArvoreVP(comparacoes,comparacoesBusca,auxTempoInsere,auxTempoBusca,achados);
     cout << "benchmark concluido com sucesso" <<endl;
     
-    /*--------------TESTE MANUAL DE BUSCA--------------------------------------------------
+    
+}
+void testArvoreVP(){
+    int comparacoes=0;
+    int comparacoesBusca=0;
+    int entrada=0;
+    int achados=0;
+    bool conseguiu=false;
+    elementoArvore aux;
+    vector <elementoArvore> elementosBusca;
+    string id;
+    arvoreVP arvore;
+    vector<elementoArvore> elementos;
+    cout << "inicializando insercao..." <<endl;
+ 
+    inicializaVetorAleatorioArvore(elementos,A); //inicializando vetor de elementos
+    for (int i = 0; i <A;i++){  //inserção
+        if(i==0){
+            cout<<"dica,a id a seguir foi inserida na arvore"<<endl<<elementos[i].id<<endl;
+        }
+        arvore.inserir(&elementos[i],&comparacoes);
+    }
+    //--------------TESTE MANUAL DE BUSCA--------------------------------------------------
     while(true){ //busca 
         cout<<"deseja procurar uma id?  1-sim || 2-nao"<<endl;
         cin>>entrada;
@@ -101,7 +125,7 @@ void benchmarkArvoreVP(){
             cin>>id;
             aux=arvore.buscar(id,&comparacoesBusca,&conseguiu);
             if(conseguiu){
-                cout<<"elemento presente na arvore,realizando acesso a disco para recuperar todas as informacoes:"<<endl;
+                cout<<endl<<"elemento presente na arvore,realizando acesso a disco para recuperar todas as informacoes:"<<endl;
                 fstream arquivoBinario("./saidaBinaria.bin", ios::in | ios::binary);
                 if (!arquivoBinario.is_open())
                 {
@@ -115,10 +139,9 @@ void benchmarkArvoreVP(){
                 cout<<"id nao encontrada com numero de comparacoes igual a:";
                 cout<<comparacoesBusca<<endl;
             }
-
         }
         else{
             return;
         }
-    }*/
+    }
 }

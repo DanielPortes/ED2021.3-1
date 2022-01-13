@@ -5,7 +5,7 @@
 #include "leitura.h"
 #include"parametros.h"
 #include <cassert>
-#define A 1000000
+
 class arvoreVP
 {
 private:

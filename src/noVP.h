@@ -14,10 +14,3 @@ struct noVP {
     noVP* pai = NULL;
     string cor;
 };
-struct desempenhoArvore{
-    int numComparacoesInsere;
-    int numComparacoes;
-    double tempo;
-    string arvore;
-    
-};

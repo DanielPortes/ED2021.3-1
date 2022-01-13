@@ -3,9 +3,9 @@
 #include "leitura.h"
 #include "Timer.h"
 #include <iostream>
-#include "arvoreVP.h"
 #include "parametros.h"
 #include "tabelaHash.h"
+#include "moduloArvoreVP.h"
 
 using namespace std;
 
@@ -16,7 +16,7 @@ enum EscolhasChamada
     modulo_de_teste = 't',
     ordenacao = 'o',
     sair = 's',
-    tabela_Hash = 'h'
+    arvoreVerPre = 'v'
 };
 
 void menu(const string& caminhoEntrada, vector<Review> &reviews)
@@ -28,7 +28,7 @@ void menu(const string& caminhoEntrada, vector<Review> &reviews)
         cout << "\tDigite 'l' para: lerCSV() \n";
         cout << "\tDigite 'e' para: escreverBinario()\n";
         cout << "\tDigite 'o' para: ordenacao() \n";
-        cout << "\tDigite 'h' para: tabelaHash() \n";
+        cout << "\tDigite 'v' para: arvoreVP() ,recomendamos sempre ler e gerar o bin no inicio das rodadas de testes \n";
         cout << "\tDigite 't' para: Modulo de teste \n";
         cout << "\tDigite 's' para sair " << endl;
 
@@ -74,9 +74,26 @@ void menu(const string& caminhoEntrada, vector<Review> &reviews)
                 }
                 break;
             }
-            case tabela_Hash:
+            case arvoreVerPre:
             {
-                benchmarkArvoreVP();
+                cout<<"qual opcao deseja?\n1-modo de analise\n2-busca manual"<<endl;
+                int opcaovp;
+                cin>>opcaovp;
+                switch(opcaovp){
+                    case 1:{
+                        benchmarkArvoreVP();
+                        break;
+                    }
+                    case 2:{
+                        testArvoreVP();
+                        break;
+                    }
+                    default:{
+                        cout<<"opcao invalida"<<endl;
+                        break;
+                    }
+                }
+                
                 break;
             }
             case sair:
@@ -94,7 +111,11 @@ void menu(const string& caminhoEntrada, vector<Review> &reviews)
 int main(int argc, char *argv[])
 {
     srand(static_cast<unsigned int>(time(nullptr)));
-
+    string x="abt";
+    string y ="acb";
+    if(x>y){
+        cout<<"dgdfg"<<endl;
+    }
     vector<Review> reviews;
 
     menu(argv[1], reviews);
