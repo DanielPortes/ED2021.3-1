@@ -10,7 +10,7 @@ using namespace std;
 class No
 {
 private:
-    vector<pair<string, int>> chaves; // {id, localizacao}
+    vector<pair<string, int>> chaves; // {id, localizacao}, localizacao exata no arquivo bin
     int t; // Grau mínimo (define o intervalo para o número de chaves)
     No **filhos;
     int n; // nos ocupados
@@ -44,6 +44,8 @@ public:
     No *procurar(pair<string, int> chave);
 
     void inserir(pair<string, int> chave);
+
+    void popularArvoreAleatoriamente();
 };
 
 #endif

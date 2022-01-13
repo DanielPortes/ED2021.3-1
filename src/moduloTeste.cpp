@@ -16,6 +16,7 @@ using namespace std;
         quickSort = 'q',
         combSort = 'b',
         hashTable = 't',
+
         sair = 's'
     };
 

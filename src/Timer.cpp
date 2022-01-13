@@ -32,6 +32,22 @@ void Timer::Stop()
 	m_duracao = fim - inicio;
 }
 
+void Timer::acrecentaSwaps()
+{
+    ++m_swaps;
+}
+
+void Timer::acrecentaComparacoes()
+{
+    ++m_comparacoes;
+}
+
+void Timer::zeraMedicoes()
+{
+    m_comparacoes = 0;
+    m_swaps = 0;
+}
+
 void Timer::benchHeapSort(int trials, const string& saidaPath)
 {
 	fstream arquivoBinario("./saidaBinaria.bin", ios::in | ios::binary), inputFile("./input.dat", ios::in), saidaTxt
@@ -293,20 +309,4 @@ void Timer::benchCombSort(int trials, const string& saidaPath)
 		saidaTxt << endl << endl << endl;
 		zeraMedicoes();
 	}
-}
-
-void Timer::acrecentaSwaps()
-{
-	++m_swaps;
-}
-
-void Timer::acrecentaComparacoes()
-{
-	++m_comparacoes;
-}
-
-void Timer::zeraMedicoes()
-{
-	m_comparacoes = 0;
-	m_swaps = 0;
 }
