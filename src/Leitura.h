@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 #include <fstream>
-
 using namespace std;
 
 struct Review
@@ -45,5 +44,7 @@ void escreverSaidaTxt(fstream &saidaTxt, vector<Review> &reviews);
 void inicializaVetorAleatorio(vector<Review> &reviews, int size);
 
 void inicializaVetorAleatorio(vector<Review> *reviews, int size);
+
+
 
 #endif // !LEITURA_H
