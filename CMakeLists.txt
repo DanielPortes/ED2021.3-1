@@ -10,4 +10,7 @@ add_executable(ED2021
         "src/Timer.cpp"
         "src/ArvoreB.cpp"
         "src/ArvoreB.h"
+        "src/ArvoreVP.cpp"
+        "src/ArvoreVP.h"
+        "src/noVP.h"
         "src/Timer.h" "src/Leitura.h" "src/Leitura.cpp" "src/Parametros.h" "src/ordenacao.cpp" "src/ordenacao.h" "src/tabelaHash.h" "src/tabelaHash.cpp" "src/moduloTeste.cpp")
