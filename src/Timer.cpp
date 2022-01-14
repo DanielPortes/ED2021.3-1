@@ -346,7 +346,7 @@ void Timer::benchBTree(int trials, const string& saidaPath)
 		cronometro.Stop();
 		saidaTxt << "\tbreve resumo: comparacoes busca = " << cronometro.m_comparacoes << endl;
 		saidaTxt << "TEMPO: " << cronometro.m_legenda << ": " << cronometro.m_duracao << "us (" << cronometro.
-				m_duracao * 0.001 << "ms)\n";
+			m_duracao * 0.001 << "ms)\n";
 		montanteComparacoesBusca += cronometro.m_comparacoes;
 		cronometro.zeraMedicoes();
 		delete arvoreB;
@@ -370,5 +370,11 @@ void Timer::buscaAleatoriaBTree(fstream& arquivoBinario, ArvoreB* arvore, Timer*
 	}
 	int rank = retonaNumeroAleatorio(0, reviews_totais);
 	Review review = retornaReviewEspecifica(rank, arquivoBinario);
-	arvore->procurar(review.review_id, timer);
+	cout << "[PROCURADO]" << review.review_id << "\n";
+
+	auto resultado = arvore->procurar(review.review_id, timer);
+
+	resultado->imprimir();
+	cout << endl<< endl<< endl<< endl;
+
 }

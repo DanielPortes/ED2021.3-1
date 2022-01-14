@@ -15,6 +15,7 @@ enum saidas
 	quickSort = 'q',
 	combSort = 'b',
 	hashTable = 't',
+	BTree = 'B',
 	sair = 's'
 };
 
@@ -28,6 +29,7 @@ void moduloTeste()
 	cout << "\t\t\tDigite 'q' para: quicksort()\n";
 	cout << "\t\t\tDigite 'b' para: combsort()\n";
 	cout << "\t\t\tDigite 't' para: hashTable()\n";
+	cout << "\t\t\tDigite 'B' para: BTree()\n";
 	cout << "\t\t\tDigite 's' para sair " << endl;
 	cout << "\t\t\t";
 
@@ -104,6 +106,24 @@ void moduloTeste()
 			escreveNMaisFrequentes(populares, topN, "teste.txt");
 			break;
 		}
+	case BTree:
+		{
+			ArvoreB arvoreB(3);
+			Timer timer("BTree");
+			arvoreB.popularArvoreAleatoriamente(&timer, 1'000'000); // todo: remover timer
+			cout << "Digite a id a busca: ";
+			string input = string();
+			cin >> input;
+			auto retorno = arvoreB.procurar(input, &timer);
+			if (retorno == nullptr)
+			{
+				cout << "busca nao encontrada";
+				break;
+			}
+			retorno->imprimir();
+			break;
+		}
+		
 	case sair:
 		{
 			return;
