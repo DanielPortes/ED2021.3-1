@@ -5,6 +5,7 @@
 #include "ArvoreB.h"
 #include "Leitura.h"
 
+class ArvoreB;
 using namespace std;
 using namespace std::chrono;
 

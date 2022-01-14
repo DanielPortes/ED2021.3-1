@@ -5,7 +5,7 @@
 #include "Timer.h"
 
 using namespace std;
-
+class Timer;
 class No
 {
 private:

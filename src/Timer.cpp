@@ -6,11 +6,10 @@
 #include <cassert>
 #include <sstream>
 
-#include "Timer.h"
+#include "ArvoreB.h"
 #include "Leitura.h"
 #include "ordenacao.h"
-#include "ArvoreB.h"
-#include "parametros.h"
+#include "Parametros.h"
 
 Timer::Timer(std::string legenda)
 	: m_legenda(move(legenda)), m_tempoInicio(std::chrono::high_resolution_clock::now()), m_swaps(0),
@@ -320,40 +319,49 @@ void Timer::benchBTree(int trials, const string& saidaPath)
 {
 	fstream saidaTxt("./" + saidaPath, ios::app | ios::out),
 	        arquivoBinario("./saidaBinaria.bin", ios::in | ios::binary);
-	int montanteComparacoes = 0;
+	int montanteComparacoesInsercao = 0;
+	int montanteComparacoesBusca = 0;
 
 	for (int i = 0; i < trials; ++i)
 	{
 		auto* arvoreB = new ArvoreB(3);
 		ostringstream msg;
-		msg << "benchBTree, trial " << i;
+		msg << "Insercao benchBTree, trial " << i;
 		{
 			Timer cronometro(msg.str());
-			arvoreB->popularArvoreAleatoriamente(this, 1000000);
-			for (int i = 0; i < 100; ++i)
-			{
-				buscaAleatoriaBTree(arquivoBinario, arvoreB, this);
-			}
+			arvoreB->popularArvoreAleatoriamente(&cronometro, 1'000'000);
 			cronometro.Stop();
-			saidaTxt << "\tTEMPO: " << cronometro.m_legenda << ": " << cronometro.m_duracao << "us (" << cronometro.
+			saidaTxt << "TEMPO: " << cronometro.m_legenda << ": " << cronometro.m_duracao << "us (" << cronometro.
 				m_duracao * 0.001 << "ms)\n";
+			montanteComparacoesInsercao += cronometro.m_comparacoes;
+			saidaTxt << "\tbreve resumo: comparacoes insercao = " << cronometro.m_comparacoes << endl;
 		}
-		montanteComparacoes += this->m_comparacoes;
-		saidaTxt << "pequeno resumo: comparacoes = " << this->m_comparacoes << endl;
-		zeraMedicoes();
+		msg.str(string());
+		msg << "\tbusca BTree, trial " << i;
+		Timer cronometro(msg.str());
+		for (int i = 0; i < 100; ++i) // busca
+		{
+			buscaAleatoriaBTree(arquivoBinario, arvoreB, &cronometro);
+		}
+		cronometro.Stop();
+		saidaTxt << "\tbreve resumo: comparacoes busca = " << cronometro.m_comparacoes << endl;
+		saidaTxt << "TEMPO: " << cronometro.m_legenda << ": " << cronometro.m_duracao << "us (" << cronometro.
+				m_duracao * 0.001 << "ms)\n";
+		montanteComparacoesBusca += cronometro.m_comparacoes;
+		cronometro.zeraMedicoes();
 		delete arvoreB;
-		arvoreB = nullptr;
 	}
 	this->Stop();
 	saidaTxt << "\nresumo algoritmo B Tree para size = " << "1'000'000" << endl; // todo: numero magico
 	saidaTxt << "\tnumero de trials:" << trials << endl;
-	saidaTxt << "\tnumero de comparacoes medias:" << montanteComparacoes / trials << endl;
+	saidaTxt << "\tnumero de comparacoes medias insercao:" << montanteComparacoesInsercao / trials << endl;
+	saidaTxt << "\tnumero de comparacoes medias busca:" << montanteComparacoesBusca / trials << endl;
 	saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001 <<
 		"ms)\n" << endl << endl << endl;
 	zeraMedicoes();
 }
 
-void Timer::buscaAleatoriaBTree(fstream& arquivoBinario, ArvoreB* arvore,Timer* timer)
+void Timer::buscaAleatoriaBTree(fstream& arquivoBinario, ArvoreB* arvore, Timer* timer)
 {
 	if (arquivoBinario.fail())
 	{

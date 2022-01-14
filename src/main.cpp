@@ -1,10 +1,8 @@
 // ED2.cpp: define o ponto de entrada para o aplicativo.
 //
-#include "leitura.h"
-#include "Timer.h"
+#include "Leitura.h"
 #include <iostream>
-#include "ArvoreB.h"
-#include "parametros.h"
+#include "Timer.h"
 #include "tabelaHash.h"
 #include "moduloArvoreVP.h"
 
@@ -118,7 +116,7 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 			}
 		case BTree:
 			{
-				Timer timer("Btree");
+				Timer timer("Total Btree");
 				timer.benchBTree(3);
 				break;
 			}
@@ -136,6 +134,8 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 
 int main(int argc, char* argv[])
 {
+
+
 	srand(static_cast<unsigned int>(time(nullptr)));
 
 	vector<Review> reviews;
