@@ -7,8 +7,10 @@
 #include <sstream>
 
 #include "Timer.h"
-#include "leitura.h"
+#include "Leitura.h"
 #include "ordenacao.h"
+#include "ArvoreB.h"
+#include "parametros.h"
 
 Timer::Timer(std::string legenda)
 	: m_legenda(move(legenda)), m_tempoInicio(std::chrono::high_resolution_clock::now()), m_swaps(0),
@@ -34,18 +36,18 @@ void Timer::Stop()
 
 void Timer::acrecentaSwaps()
 {
-    ++m_swaps;
+	++m_swaps;
 }
 
 void Timer::acrecentaComparacoes()
 {
-    ++m_comparacoes;
+	++m_comparacoes;
 }
 
 void Timer::zeraMedicoes()
 {
-    m_comparacoes = 0;
-    m_swaps = 0;
+	m_comparacoes = 0;
+	m_swaps = 0;
 }
 
 void Timer::benchHeapSort(int trials, const string& saidaPath)
@@ -87,7 +89,8 @@ void Timer::benchHeapSort(int trials, const string& saidaPath)
 		saidaTxt << "\tnumero de trials:" << trials << endl;
 		saidaTxt << "\tnumero de comparacoes medias:" << montanteComparacoes / trials << endl;
 		saidaTxt << "\tnumero de trocas medias:" << montanteSwaps / trials << endl;
-		saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001 <<
+		saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001
+			<<
 			"ms)\n";
 		saidaTxt << endl << endl << endl;
 		zeraMedicoes();
@@ -257,7 +260,8 @@ void Timer::benchQuickSort(int trials, const string& saidaPath)
 		saidaTxt << "\tnumero de trials:" << trials << endl;
 		saidaTxt << "\tnumero de comparacoes medias:" << montanteComparacoes / trials << endl;
 		saidaTxt << "\tnumero de trocas medias:" << montanteSwaps / trials << endl;
-		saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001 <<
+		saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001
+			<<
 			"ms)\n";
 		saidaTxt << endl << endl << endl;
 		zeraMedicoes();
@@ -304,9 +308,59 @@ void Timer::benchCombSort(int trials, const string& saidaPath)
 		saidaTxt << "\tnumero de trials:" << trials << endl;
 		saidaTxt << "\tnumero de comparacoes medias:" << montanteComparacoes / trials << endl;
 		saidaTxt << "\tnumero de trocas medias:" << montanteSwaps / trials << endl;
-		saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001 <<
+		saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001
+			<<
 			"ms)\n";
 		saidaTxt << endl << endl << endl;
 		zeraMedicoes();
 	}
+}
+
+void Timer::benchBTree(int trials, const string& saidaPath)
+{
+	fstream saidaTxt("./" + saidaPath, ios::app | ios::out),
+	        arquivoBinario("./saidaBinaria.bin", ios::in | ios::binary);
+	int montanteComparacoes = 0;
+
+	for (int i = 0; i < trials; ++i)
+	{
+		auto* arvoreB = new ArvoreB(3);
+		ostringstream msg;
+		msg << "benchBTree, trial " << i;
+		{
+			Timer cronometro(msg.str());
+			arvoreB->popularArvoreAleatoriamente(this, 1000000);
+			for (int i = 0; i < 100; ++i)
+			{
+				buscaAleatoriaBTree(arquivoBinario, arvoreB, this);
+			}
+			cronometro.Stop();
+			saidaTxt << "\tTEMPO: " << cronometro.m_legenda << ": " << cronometro.m_duracao << "us (" << cronometro.
+				m_duracao * 0.001 << "ms)\n";
+		}
+		montanteComparacoes += this->m_comparacoes;
+		saidaTxt << "pequeno resumo: comparacoes = " << this->m_comparacoes << endl;
+		zeraMedicoes();
+		delete arvoreB;
+		arvoreB = nullptr;
+	}
+	this->Stop();
+	saidaTxt << "\nresumo algoritmo B Tree para size = " << "1'000'000" << endl; // todo: numero magico
+	saidaTxt << "\tnumero de trials:" << trials << endl;
+	saidaTxt << "\tnumero de comparacoes medias:" << montanteComparacoes / trials << endl;
+	saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001 <<
+		"ms)\n" << endl << endl << endl;
+	zeraMedicoes();
+}
+
+void Timer::buscaAleatoriaBTree(fstream& arquivoBinario, ArvoreB* arvore,Timer* timer)
+{
+	if (arquivoBinario.fail())
+	{
+		cerr << "ERRO: arquivo nao pode ser aberto na funcao buscaAleatoriaBTree()";
+		assert(false);
+	}
+	int rank = retonaNumeroAleatorio(0, reviews_totais);
+	Review review = retornaReviewEspecifica(rank, arquivoBinario);
+	arvore->procurar(review.review_id, timer);
 }

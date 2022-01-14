@@ -1,7 +1,6 @@
-#ifndef ARVOREB_H_INCLUDED
-#define ARVOREB_H_INCLUDED
+#pragma once
 
-#include <iostream>
+
 #include "Leitura.h"
 #include "Timer.h"
 
@@ -10,42 +9,42 @@ using namespace std;
 class No
 {
 private:
-    vector<pair<string, int>> chaves; // {id, localizacao}, localizacao exata no arquivo bin
-    int t; // Grau mínimo (define o intervalo para o número de chaves)
-    No **filhos;
-    int n; // nos ocupados
-    bool folha;
+	vector<pair<string, int>> chaves; // {id, localizacao}, localizacao exata no arquivo bin
+	int t; // Grau mínimo (define o intervalo para o número de chaves)
+	No** filhos;
+	int n; // nos ocupados
+	bool folha;
+
+
 public:
-    No(int t, bool folha);
+	No(int t, bool folha);
 
-    void inserir(pair<string, int> chave);
+	void inserir(pair<string, int> chave, Timer *timer);
 
-    void dividirFilho(int i, No *p);
+	void dividirFilho(int i, No* p, Timer *timer);
 
-    void imprimir();
+	void imprimir();
 
-    No *procurar(pair<string, int>); // Procurar uma chave na arvore
+	No* procurar(string chave, Timer *timer); // Procurar uma chave na arvore
 
-    friend class ArvoreB;
-
+	friend class ArvoreB;
 };
 
 class ArvoreB
 {
 private:
-    No *raiz;
-    int t; // Grau minimo
+	No* raiz;
+	int t; // Grau minimo
 
 public:
-    ArvoreB(int elemento);
+	ArvoreB(int elemento);
 
-    void imprimir();
+	void imprimir();
 
-    No *procurar(pair<string, int> chave);
+	No* procurar(string chave, Timer *timer);
 
-    void inserir(pair<string, int> chave);
+	void inserir(pair<string, int> chave, Timer *timer);
 
-    void popularArvoreAleatoriamente();
+	void popularArvoreAleatoriamente(Timer *timer, int tam);
 };
 
-#endif

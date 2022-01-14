@@ -1,9 +1,9 @@
+#pragma once
+
 #include <iostream>
 #include "noVP.h"
-//#include "struct.h"
-#include <time.h>
-#include "leitura.h"
-#include"parametros.h"
+#include "Leitura.h"
+#include"Parametros.h"
 #include <cassert>
 
 class arvoreVP

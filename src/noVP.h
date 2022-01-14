@@ -1,6 +1,8 @@
-#include <string.h>
+#pragma once
+
+
 #include<iostream>
-#include "leitura.h"
+#include "Leitura.h"
 
 using namespace std;
 struct elementoArvore{

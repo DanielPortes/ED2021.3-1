@@ -1,9 +1,8 @@
 #include <vector>
 #include <algorithm>
-#include "ordenacao.h"
-
 #include <iostream>
 
+#include "ordenacao.h"
 #include "leitura.h"
 #include "Timer.h"
 

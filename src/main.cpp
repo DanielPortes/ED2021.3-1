@@ -18,6 +18,7 @@ enum EscolhasChamada
 	ordenacao = 'o',
 	sair = 's',
 	arvoreVerPre = 'v',
+	BTree = 'b',
 	tabela_Hash = 'h'
 };
 
@@ -31,8 +32,8 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 		cout << "\tDigite 'e' para: escreverBinario()\n";
 		cout << "\tDigite 'o' para: ordenacao() \n";
 		cout << "\tDigite 'h' para: tabelaHash() \n";
-		cout <<
-			"\tDigite 'v' para: arvoreVP() ,recomendamos sempre ler e gerar o bin no inicio das rodadas de testes \n";
+		cout << "\tDigite 'v' para: arvoreVP() \n";
+		cout << "\tDigite 'b' para: BTree() \n";
 		cout << "\tDigite 't' para: Modulo de teste \n";
 		cout << "\tDigite 's' para sair " << endl;
 
@@ -93,7 +94,7 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 		case arvoreVerPre:
 			{
 				cout << "qual opcao deseja?\n1-modo de analise\n2-busca manual" << endl;
-				int opcaovp;
+				int opcaovp = 0;
 				cin >> opcaovp;
 				switch (opcaovp)
 				{
@@ -113,7 +114,12 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 						break;
 					}
 				}
-
+				break;
+			}
+		case BTree:
+			{
+				Timer timer("Btree");
+				timer.benchBTree(3);
 				break;
 			}
 		case sair:

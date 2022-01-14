@@ -1,5 +1,5 @@
-#ifndef LEITURA_H
-#define LEITURA_H
+#pragma once
+
 
 #include <vector>
 #include <string>
@@ -13,14 +13,6 @@ struct Review
     int upvotes;
     string app_version;
     string posted_date;
-};
-
-struct desempenho
-{
-    string nome_algoritimo;           // Nome do algoritmo (Nome)
-    int numComparacoes;               // Guarda a quantidade de comparacoes feitas em cada uma das repeticoes        
-    int numTrocas;                    // Guarda a quantidade de trocas feitas em cada uma das repeticoes    
-    double tempo;                        // Guarda o tempo de execucao            
 };
 
 struct Review;
@@ -44,7 +36,3 @@ void escreverSaidaTxt(fstream &saidaTxt, vector<Review> &reviews);
 void inicializaVetorAleatorio(vector<Review> &reviews, int size);
 
 void inicializaVetorAleatorio(vector<Review> *reviews, int size);
-
-
-
-#endif // !LEITURA_H

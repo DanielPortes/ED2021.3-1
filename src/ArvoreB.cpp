@@ -1,8 +1,9 @@
 #include "ArvoreB.h"
 
 #include <cassert>
-
+#include "iostream"
 #include "Parametros.h"
+#include "Timer.h"
 
 void No::imprimir()
 {
@@ -22,14 +23,15 @@ void No::imprimir()
 	}
 }
 
-void No::inserir(pair<string, int> chave)
+void No::inserir(pair<string, int> chave, Timer *timer)
 {
 	int i = n - 1;
-
+	timer->acrecentaComparacoes();
 	if (folha)
 	{
 		while (i >= 0 && chaves[i].first > chave.first)
 		{
+			timer->acrecentaComparacoes();
 			chaves[i + 1] = chaves[i];
 			i--;
 		}
@@ -40,18 +42,21 @@ void No::inserir(pair<string, int> chave)
 	else
 	{
 		while (i >= 0 && chaves[i] > chave)
+		{
+			timer->acrecentaComparacoes();
 			i--;
-
+		}
+		timer->acrecentaComparacoes();
 		if (filhos[i + 1]->n == 2 * t - 1)
 		{
-			dividirFilho(i + 1, filhos[i + 1]);
-
+			dividirFilho(i + 1, filhos[i + 1], timer);
+			timer->acrecentaComparacoes();
 			if (chaves[i + 1] < chave)
 			{
 				i++;
 			}
 		}
-		filhos[i + 1]->inserir(chave);
+		filhos[i + 1]->inserir(chave, timer);
 	}
 }
 
@@ -66,20 +71,23 @@ No::No(int t, bool folha)
 	n = 0;
 }
 
-void No::dividirFilho(int i, No* p)
+void No::dividirFilho(int i, No* p, Timer *timer)
 {
 	No* z = new No(p->t, p->folha);
 	z->n = t - 1;
 
 	for (int j = 0; j < t - 1; j++)
 	{
+		timer->acrecentaComparacoes();
 		z->chaves[j] = p->chaves[j + t];
 	}
 
+	timer->acrecentaComparacoes();
 	if (!p->folha)
 	{
 		for (int j = 0; j < t; j++)
 		{
+			timer->acrecentaComparacoes();
 			z->filhos[j] = p->filhos[j + t];
 		}
 	}
@@ -87,6 +95,7 @@ void No::dividirFilho(int i, No* p)
 	p->n = t - 1;
 	for (int j = n; j >= i + 1; j--)
 	{
+		timer->acrecentaComparacoes();
 		filhos[j + 1] = filhos[j];
 	}
 
@@ -94,6 +103,7 @@ void No::dividirFilho(int i, No* p)
 
 	for (int j = n - 1; j >= i; j--)
 	{
+		timer->acrecentaComparacoes();
 		chaves[j + 1] = chaves[j];
 	}
 
@@ -101,25 +111,26 @@ void No::dividirFilho(int i, No* p)
 	n = n + 1;
 }
 
-No* No::procurar(pair<string, int> chave)
+No* No::procurar(string chave, Timer *timer)
 {
 	int i = 0;
-	while (i < n && chave.second > chaves[i].second)
+	while (i < n && chave > chaves[i].first)
 	{
+		timer->acrecentaComparacoes();
 		i++;
 	}
-
-	if (chaves[i] == chave)
+	timer->acrecentaComparacoes();
+	if (chaves[i].first == chave)
 	{
 		return this;
 	}
-
+	timer->acrecentaComparacoes();
 	if (folha)
 	{
 		return nullptr;
 	}
 
-	return filhos[i]->procurar(chave);
+	return filhos[i]->procurar(chave, timer);
 }
 
 ArvoreB::ArvoreB(int elemento)
@@ -137,13 +148,15 @@ void ArvoreB::imprimir()
 	cout << endl;
 }
 
-No* ArvoreB::procurar(pair<string, int> chave)
+No* ArvoreB::procurar(string chave, Timer *timer)
 {
-	return (raiz == nullptr) ? nullptr : raiz->procurar(chave);
+	timer->acrecentaComparacoes();
+	return (raiz == nullptr) ? nullptr : raiz->procurar(chave, timer);
 }
 
-void ArvoreB::inserir(pair<string, int> chave)
+void ArvoreB::inserir(pair<string, int> chave, Timer *timer)
 {
+	timer->acrecentaComparacoes();
 	if (raiz == nullptr)
 	{
 		raiz = new No(t, true);
@@ -153,6 +166,7 @@ void ArvoreB::inserir(pair<string, int> chave)
 	else
 	{
 		// Raiz cheia ,arvore cresce em altura
+		timer->acrecentaComparacoes();
 		if (raiz->n == 2 * t - 1)
 		{
 			//Alocar memória para nova raiz;
@@ -162,22 +176,23 @@ void ArvoreB::inserir(pair<string, int> chave)
 			pRaiz->filhos[0] = raiz;
 
 			// Dividir a raiz
-			pRaiz->dividirFilho(0, raiz);
+			pRaiz->dividirFilho(0, raiz, timer);
 
 			// Raiz tem dois filhos,decidir onde vai ser inserido
 			int i = 0;
+			timer->acrecentaComparacoes();
 			if (pRaiz->chaves[0].first < chave.first)
 			{
 				i++;
 			}
-			pRaiz->filhos[i]->inserir(chave);
+			pRaiz->filhos[i]->inserir(chave, timer);
 
 			// Mudar raiz
 			raiz = pRaiz;
 		}
 		else
 		{
-			raiz->inserir(chave);
+			raiz->inserir(chave, timer);
 		}
 	}
 }
@@ -185,7 +200,7 @@ void ArvoreB::inserir(pair<string, int> chave)
 /*
 funcao exigida para o relatorio,
 */
-void ArvoreB::popularArvoreAleatoriamente()
+void ArvoreB::popularArvoreAleatoriamente(Timer *timer, int tam)
 {
 	fstream arquivoBinario("./saidaBinaria.bin", ios::binary | ios::in);
 	if (arquivoBinario.fail())
@@ -193,11 +208,11 @@ void ArvoreB::popularArvoreAleatoriamente()
 		cerr << "[ERROR] arquivo nao pode ser aberto na funcao popularArvoreAleatoriamente\n";
 		assert(false);
 	}
-	for (int i = 0; i < this->t; ++i)
+	for (int i = 0; i < tam; ++i)
 	{
 		int id = retonaNumeroAleatorio(0, reviews_totais);
-		Review review = retornaReviewEspecifica(id, arquivoBinario);
+		auto review = retornaReviewEspecifica(id, arquivoBinario);
 		auto chave = make_pair(review.review_id, id * TAMANHO_MAX_STRUCT);
-		this->inserir(chave);
+		this->inserir(chave, timer);
 	}
 }
