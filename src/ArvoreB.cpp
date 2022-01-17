@@ -14,8 +14,9 @@ void No::imprimir()
 		{
 			filhos[i]->imprimir();
 		}
-		cout << " " << chaves[i].first << " " << chaves[i].second;
+		cout << " " << chaves[i].first << " " << chaves[i].second << "\n";
 	}
+	cout << endl; // todo: checar ordem
 
 	if (!folha)
 	{
@@ -23,7 +24,7 @@ void No::imprimir()
 	}
 }
 
-void No::inserir(pair<string, int> chave, Timer *timer)
+void No::inserir(pair<string, int> chave, Timer* timer)
 {
 	int i = n - 1;
 	timer->acrecentaComparacoes();
@@ -65,13 +66,13 @@ No::No(int t, bool folha)
 	this->t = t;
 	this->folha = folha;
 
-	chaves.resize(2 * t - 1);
+	chaves.resize(2 * t - 1, {string(), 0});
 	filhos = new No*[2 * t];
 
 	n = 0;
 }
 
-void No::dividirFilho(int i, No* p, Timer *timer)
+void No::dividirFilho(int i, No* p, Timer* timer)
 {
 	No* z = new No(p->t, p->folha);
 	z->n = t - 1;
@@ -111,7 +112,7 @@ void No::dividirFilho(int i, No* p, Timer *timer)
 	n = n + 1;
 }
 
-No* No::procurar(string chave, Timer *timer)
+No* No::procurar(string chave, Timer* timer)
 {
 	int i = 0;
 	while (i < n && chave > chaves[i].first)
@@ -148,13 +149,13 @@ void ArvoreB::imprimir()
 	cout << endl;
 }
 
-No* ArvoreB::procurar(string chave, Timer *timer)
+No* ArvoreB::procurar(string chave, Timer* timer)
 {
 	timer->acrecentaComparacoes();
 	return (raiz == nullptr) ? nullptr : raiz->procurar(chave, timer);
 }
 
-void ArvoreB::inserir(pair<string, int> chave, Timer *timer)
+void ArvoreB::inserir(pair<string, int> chave, Timer* timer)
 {
 	timer->acrecentaComparacoes();
 	if (raiz == nullptr)
@@ -200,7 +201,7 @@ void ArvoreB::inserir(pair<string, int> chave, Timer *timer)
 /*
 funcao exigida para o relatorio,
 */
-void ArvoreB::popularArvoreAleatoriamente(Timer *timer, int tam)
+void ArvoreB::popularArvoreAleatoriamente(Timer* timer, int tam)
 {
 	fstream arquivoBinario("./saidaBinaria.bin", ios::binary | ios::in);
 	if (arquivoBinario.fail())

@@ -315,13 +315,13 @@ void Timer::benchCombSort(int trials, const string& saidaPath)
 	}
 }
 
-void Timer::benchBTree(int trials, const string& saidaPath)
+void Timer::benchBTree(int trials, int ordem, const string& saidaPath)
 {
 	fstream saidaTxt("./" + saidaPath, ios::app | ios::out),
 	        arquivoBinario("./saidaBinaria.bin", ios::in | ios::binary);
 	int montanteComparacoesInsercao = 0;
 	int montanteComparacoesBusca = 0;
-
+	int qtd = 1'000'000;
 	for (int i = 0; i < trials; ++i)
 	{
 		auto* arvoreB = new ArvoreB(3);
@@ -329,7 +329,7 @@ void Timer::benchBTree(int trials, const string& saidaPath)
 		msg << "Insercao benchBTree, trial " << i;
 		{
 			Timer cronometro(msg.str());
-			arvoreB->popularArvoreAleatoriamente(&cronometro, 1'000'000);
+			arvoreB->popularArvoreAleatoriamente(&cronometro, qtd);
 			cronometro.Stop();
 			saidaTxt << "TEMPO: " << cronometro.m_legenda << ": " << cronometro.m_duracao << "us (" << cronometro.
 				m_duracao * 0.001 << "ms)\n";
@@ -352,7 +352,8 @@ void Timer::benchBTree(int trials, const string& saidaPath)
 		delete arvoreB;
 	}
 	this->Stop();
-	saidaTxt << "\nresumo algoritmo B Tree para size = " << "1'000'000" << endl; // todo: numero magico
+	saidaTxt << "\nresumo algoritmo B Tree para size = " << qtd; // todo: numero magico
+	saidaTxt << "\nresumo algoritmo B Tree para ordem = " << ordem << endl; // todo: numero magico
 	saidaTxt << "\tnumero de trials:" << trials << endl;
 	saidaTxt << "\tnumero de comparacoes medias insercao:" << montanteComparacoesInsercao / trials << endl;
 	saidaTxt << "\tnumero de comparacoes medias busca:" << montanteComparacoesBusca / trials << endl;
@@ -370,11 +371,7 @@ void Timer::buscaAleatoriaBTree(fstream& arquivoBinario, ArvoreB* arvore, Timer*
 	}
 	int rank = retonaNumeroAleatorio(0, reviews_totais);
 	Review review = retornaReviewEspecifica(rank, arquivoBinario);
-	cout << "[PROCURADO]" << review.review_id << "\n";
 
 	auto resultado = arvore->procurar(review.review_id, timer);
-
-	resultado->imprimir();
-	cout << endl<< endl<< endl<< endl;
 
 }

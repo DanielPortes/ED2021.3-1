@@ -43,7 +43,7 @@ public:
 
 	void buscaAleatoriaBTree(fstream& arquivoBinario, ArvoreB* arvore, Timer* timer);
 
-	void benchBTree(int trials, const string& saidaPath = "saida.txt");
+	void benchBTree(int trials, int ordem, const string& saidaPath = "saida.txt");
 
 	Timer(const Timer&) = delete;
 
@@ -52,4 +52,3 @@ public:
 private:
 	void zeraMedicoes();
 };
-

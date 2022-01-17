@@ -116,8 +116,14 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 			}
 		case BTree:
 			{
-				Timer timer("Total Btree");
-				timer.benchBTree(3);
+				{
+					Timer timer("Total Btree");
+					timer.benchBTree(3, 20);
+				}
+				{
+					Timer timer("Total Btree");
+					timer.benchBTree(3, 200);
+				}
 				break;
 			}
 		case sair:
@@ -134,8 +140,6 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 
 int main(int argc, char* argv[])
 {
-
-
 	srand(static_cast<unsigned int>(time(nullptr)));
 
 	vector<Review> reviews;

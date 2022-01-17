@@ -1,11 +1,11 @@
 #pragma once
 
-
 #include "Leitura.h"
 #include "Timer.h"
 
 using namespace std;
 class Timer;
+
 class No
 {
 private:
@@ -15,17 +15,16 @@ private:
 	int n; // nos ocupados
 	bool folha;
 
-
 public:
 	No(int t, bool folha);
 
-	void inserir(pair<string, int> chave, Timer *timer);
+	void inserir(pair<string, int> chave, Timer* timer);
 
-	void dividirFilho(int i, No* p, Timer *timer);
+	void dividirFilho(int i, No* p, Timer* timer);
 
 	void imprimir();
 
-	No* procurar(string chave, Timer *timer); // Procurar uma chave na arvore
+	No* procurar(string chave, Timer* timer); // Procurar uma chave na arvore
 
 	friend class ArvoreB;
 };
@@ -41,10 +40,9 @@ public:
 
 	void imprimir();
 
-	No* procurar(string chave, Timer *timer);
+	No* procurar(string chave, Timer* timer);
 
-	void inserir(pair<string, int> chave, Timer *timer);
+	void inserir(pair<string, int> chave, Timer* timer);
 
-	void popularArvoreAleatoriamente(Timer *timer, int tam);
+	void popularArvoreAleatoriamente(Timer* timer, int tam);
 };
-
