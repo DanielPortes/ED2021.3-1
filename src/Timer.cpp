@@ -324,12 +324,12 @@ void Timer::benchBTree(int trials, int ordem, const string& saidaPath)
 	int qtd = 1'000'000;
 	for (int i = 0; i < trials; ++i)
 	{
-		auto* arvoreB = new ArvoreB(3);
+		ArvoreB arvoreB(10);
 		ostringstream msg;
 		msg << "Insercao benchBTree, trial " << i;
 		{
 			Timer cronometro(msg.str());
-			arvoreB->popularArvoreAleatoriamente(&cronometro, qtd);
+			arvoreB.popularArvoreAleatoriamente(&cronometro, qtd);
 			cronometro.Stop();
 			saidaTxt << "TEMPO: " << cronometro.m_legenda << ": " << cronometro.m_duracao << "us (" << cronometro.
 				m_duracao * 0.001 << "ms)\n";
@@ -341,7 +341,7 @@ void Timer::benchBTree(int trials, int ordem, const string& saidaPath)
 		Timer cronometro(msg.str());
 		for (int i = 0; i < 100; ++i) // busca
 		{
-			buscaAleatoriaBTree(arquivoBinario, arvoreB, &cronometro);
+			buscaAleatoriaBTree(arquivoBinario, &arvoreB, &cronometro);
 		}
 		cronometro.Stop();
 		saidaTxt << "\tbreve resumo: comparacoes busca = " << cronometro.m_comparacoes << endl;
@@ -349,7 +349,6 @@ void Timer::benchBTree(int trials, int ordem, const string& saidaPath)
 			m_duracao * 0.001 << "ms)\n";
 		montanteComparacoesBusca += cronometro.m_comparacoes;
 		cronometro.zeraMedicoes();
-		delete arvoreB;
 	}
 	this->Stop();
 	saidaTxt << "\nresumo algoritmo B Tree para size = " << qtd; // todo: numero magico

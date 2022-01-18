@@ -72,6 +72,25 @@ No::No(int t, bool folha)
 	n = 0;
 }
 
+void ArvoreB::liberaNo(No* no)
+{
+	if (!no->folha)
+	{
+		for (int i = 0; i <= no->n; ++i)
+		{
+			liberaNo(no->filhos[i]);
+		}
+	}
+	delete no->filhos;
+	// delete no->chaves;
+	delete no;
+}
+
+ArvoreB::~ArvoreB()
+{
+	liberaNo(this->raiz);
+}
+
 void No::dividirFilho(int i, No* p, Timer* timer)
 {
 	No* z = new No(p->t, p->folha);

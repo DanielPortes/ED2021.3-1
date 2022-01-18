@@ -38,6 +38,10 @@ private:
 public:
 	ArvoreB(int elemento);
 
+	~ArvoreB();
+
+	void liberaNo(No* no);
+
 	void imprimir();
 
 	No* procurar(string chave, Timer* timer);
