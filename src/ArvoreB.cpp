@@ -85,7 +85,8 @@ void ArvoreB::liberaNo(No* no)
 			liberaNo(no->filhos[i]);
 		}
 	}
-	delete no->filhos;
+
+	delete[] no->filhos;
 	// delete no->chaves;
 	delete no;
 }
