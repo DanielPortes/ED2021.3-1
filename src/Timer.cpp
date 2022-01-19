@@ -362,8 +362,8 @@ void Timer::benchBTree(int trials, int ordem, const string& saidaPath)
 	saidaTxt << "\tnumero de trials:" << trials << endl;
 	saidaTxt << "\tnumero de comparacoes medias insercao:" << montanteComparacoesInsercao / trials << endl;
 	saidaTxt << "\tnumero de comparacoes medias busca:" << montanteComparacoesBusca / trials << endl;
-	saidaTxt << "\ttempo medio de insercao:" << montanteTempoInsercao / trials * 0.001 << "ms\n";
-	saidaTxt << "\ttempo medio de busca:" << montanteTempoBusca / trials * 0.001 << "ms\n";
+	saidaTxt << "\ttempo medio de insercao:" << montanteTempoInsercao / trials * 0.001 << " ms\n";
+	saidaTxt << "\ttempo medio de busca:" << montanteTempoBusca / trials * 0.001 << " ms\n";
 	saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001 <<
 		"ms)\n" << endl << endl << endl;
 	zeraMedicoes();
@@ -377,14 +377,9 @@ void Timer::buscaAleatoriaBTree(fstream& arquivoBinario, ArvoreB* arvore, Timer*
 		assert(false);
 	}
 	int rank = retonaNumeroAleatorio(0, reviews_totais);
-	// cout << rank << " ";
 
 	Review review = retornaReviewEspecifica(rank, arquivoBinario);
 
-	No* resultado = nullptr;
-	resultado = arvore->procurar(review.review_id, timer);
-	if (resultado == nullptr)
-	{
-		cout << "[NOT FOUND]" << endl;
-	}
+	auto resultado = arvore->procurar(review.review_id, timer);
+
 }
