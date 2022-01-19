@@ -324,7 +324,7 @@ void Timer::benchBTree(int trials, int ordem, const string& saidaPath)
 	int qtd = 1'000'000;
 	for (int i = 0; i < trials; ++i)
 	{
-		ArvoreB arvoreB(10);
+		ArvoreB arvoreB(ordem);
 		ostringstream msg;
 		msg << "Insercao benchBTree, trial " << i;
 		{
@@ -372,5 +372,4 @@ void Timer::buscaAleatoriaBTree(fstream& arquivoBinario, ArvoreB* arvore, Timer*
 	Review review = retornaReviewEspecifica(rank, arquivoBinario);
 
 	auto resultado = arvore->procurar(review.review_id, timer);
-
 }

@@ -9,9 +9,10 @@ class Timer;
 class No
 {
 private:
-	vector<pair<string, int>> chaves; // {id, localizacao}, localizacao exata no arquivo bin
-	int t; // Grau mínimo (define o intervalo para o número de chaves)
+	vector<pair<string, int>> chaves; // {id, localizacao}, eh a localizacao exata no arquivo bin
 	No** filhos;
+	int t; // Grau mínimo
+	int m; // g max
 	int n; // nos ocupados
 	bool folha;
 
@@ -34,9 +35,11 @@ class ArvoreB
 private:
 	No* raiz;
 	int t; // Grau minimo
+	int m; // g max
+
 
 public:
-	ArvoreB(int elemento);
+	ArvoreB(int ordem);
 
 	~ArvoreB();
 

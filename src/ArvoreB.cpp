@@ -2,8 +2,23 @@
 
 #include <cassert>
 #include "iostream"
+
 #include "Parametros.h"
+
 #include "Timer.h"
+
+No::No(int t, bool folha)
+{
+	this->m = t * 2;
+	this->t = t;
+	this->folha = folha;
+
+	chaves.resize(m-1, {string(), 0});
+	// this->chaves = new pair<string, int>[m - 1];
+	filhos = new No*[m];
+
+	n = 0;
+}
 
 void No::imprimir()
 {
@@ -42,34 +57,23 @@ void No::inserir(pair<string, int> chave, Timer* timer)
 	}
 	else
 	{
-		while (i >= 0 && chaves[i] > chave)
+		while (i >= 0 && chaves[i].first > chave.first)
 		{
 			timer->acrecentaComparacoes();
 			i--;
 		}
 		timer->acrecentaComparacoes();
-		if (filhos[i + 1]->n == 2 * t - 1)
+		if (filhos[i + 1]->n == m - 1)
 		{
 			dividirFilho(i + 1, filhos[i + 1], timer);
 			timer->acrecentaComparacoes();
-			if (chaves[i + 1] < chave)
+			if (chaves[i + 1].first < chave.first)
 			{
 				i++;
 			}
 		}
 		filhos[i + 1]->inserir(chave, timer);
 	}
-}
-
-No::No(int t, bool folha)
-{
-	this->t = t;
-	this->folha = folha;
-
-	chaves.resize(2 * t - 1, {string(), 0});
-	filhos = new No*[2 * t];
-
-	n = 0;
 }
 
 void ArvoreB::liberaNo(No* no)
@@ -96,12 +100,6 @@ void No::dividirFilho(int i, No* p, Timer* timer)
 	No* z = new No(p->t, p->folha);
 	z->n = t - 1;
 
-	for (int j = 0; j < t - 1; j++)
-	{
-		timer->acrecentaComparacoes();
-		z->chaves[j] = p->chaves[j + t];
-	}
-
 	timer->acrecentaComparacoes();
 	if (!p->folha)
 	{
@@ -110,6 +108,12 @@ void No::dividirFilho(int i, No* p, Timer* timer)
 			timer->acrecentaComparacoes();
 			z->filhos[j] = p->filhos[j + t];
 		}
+	}
+
+	for (int j = 0; j < t - 1; j++)
+	{
+		timer->acrecentaComparacoes();
+		z->chaves[j] = p->chaves[j + t];
 	}
 
 	p->n = t - 1;
@@ -153,10 +157,10 @@ No* No::procurar(string chave, Timer* timer)
 	return filhos[i]->procurar(chave, timer);
 }
 
-ArvoreB::ArvoreB(int elemento)
+ArvoreB::ArvoreB(int ordem)
 {
 	raiz = nullptr;
-	t = elemento;
+	t = ordem;
 }
 
 void ArvoreB::imprimir()
