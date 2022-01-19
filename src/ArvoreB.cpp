@@ -7,10 +7,10 @@
 
 #include "Timer.h"
 
-No::No(int t, bool folha)
+No::No(int ordem, bool folha)
 {
-	this->m = t * 2;
-	this->t = t;
+	this->m = ordem;
+	this->t = ordem / 2;
 	this->folha = folha;
 
 	chaves.resize(m-1, {string(), 0});
@@ -97,7 +97,7 @@ ArvoreB::~ArvoreB()
 
 void No::dividirFilho(int i, No* p, Timer* timer)
 {
-	No* z = new No(p->t, p->folha);
+	No* z = new No(p->m, p->folha);
 	z->n = t - 1;
 
 	timer->acrecentaComparacoes();
@@ -160,7 +160,8 @@ No* No::procurar(string chave, Timer* timer)
 ArvoreB::ArvoreB(int ordem)
 {
 	raiz = nullptr;
-	t = ordem;
+	t = ordem / 2;
+	m = ordem;
 }
 
 void ArvoreB::imprimir()
@@ -183,7 +184,7 @@ void ArvoreB::inserir(pair<string, int> chave, Timer* timer)
 	timer->acrecentaComparacoes();
 	if (raiz == nullptr)
 	{
-		raiz = new No(t, true);
+		raiz = new No(m, true);
 		raiz->chaves[0] = chave;
 		raiz->n = 1;
 	}
@@ -194,7 +195,7 @@ void ArvoreB::inserir(pair<string, int> chave, Timer* timer)
 		if (raiz->n == 2 * t - 1)
 		{
 			//Alocar memória para nova raiz;
-			No* pRaiz = new No(t, false);
+			No* pRaiz = new No(m, false);
 
 			// Raiz velha e filha da nova raiz
 			pRaiz->filhos[0] = raiz;

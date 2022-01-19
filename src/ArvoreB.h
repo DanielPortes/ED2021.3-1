@@ -17,7 +17,7 @@ private:
 	bool folha;
 
 public:
-	No(int t, bool folha);
+	No(int ordem, bool folha);
 
 	void inserir(pair<string, int> chave, Timer* timer);
 
