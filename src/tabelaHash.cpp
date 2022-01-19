@@ -4,8 +4,8 @@
 #include <cassert>
 
 #include "tabelaHash.h"
-#include "leitura.h"
-#include "parametros.h"
+#include "Leitura.h"
+#include "Parametros.h"
 #include "ordenacao.h"
 
 using namespace std;

@@ -135,7 +135,7 @@ void No::dividirFilho(int i, No* p, Timer* timer)
 	n = n + 1;
 }
 
-No* No::procurar(string chave, Timer* timer)
+No* No::procurar(const string& chave, Timer* timer)
 {
 	int i = 0;
 	while (i < n && chave > chaves[i].first)
@@ -146,11 +146,17 @@ No* No::procurar(string chave, Timer* timer)
 	timer->acrecentaComparacoes();
 	if (chaves[i].first == chave)
 	{
+		// cout << "[FOUND]" << chaves[i].first ;
+		// cout << "\t[chave]" << chave << endl;
+
 		return this;
 	}
 	timer->acrecentaComparacoes();
 	if (folha)
 	{
+		// cout << "[NOT FOUND]" << endl;
+		// cout << "[NOT FOUND]" << chave << endl;
+
 		return nullptr;
 	}
 
@@ -173,7 +179,7 @@ void ArvoreB::imprimir()
 	cout << endl;
 }
 
-No* ArvoreB::procurar(string chave, Timer* timer)
+No* ArvoreB::procurar(const string& chave, Timer* timer)
 {
 	timer->acrecentaComparacoes();
 	return (raiz == nullptr) ? nullptr : raiz->procurar(chave, timer);
@@ -190,17 +196,14 @@ void ArvoreB::inserir(pair<string, int> chave, Timer* timer)
 	}
 	else
 	{
-		// Raiz cheia ,arvore cresce em altura
+		// no cheio
 		timer->acrecentaComparacoes();
-		if (raiz->n == 2 * t - 1)
+		if (raiz->n == m - 1)
 		{
-			//Alocar memória para nova raiz;
 			No* pRaiz = new No(m, false);
 
-			// Raiz velha e filha da nova raiz
 			pRaiz->filhos[0] = raiz;
 
-			// Dividir a raiz
 			pRaiz->dividirFilho(0, raiz, timer);
 
 			// Raiz tem dois filhos,decidir onde vai ser inserido
@@ -235,9 +238,9 @@ void ArvoreB::popularArvoreAleatoriamente(Timer* timer, int tam)
 	}
 	for (int i = 0; i < tam; ++i)
 	{
-		int id = retonaNumeroAleatorio(0, reviews_totais);
-		auto review = retornaReviewEspecifica(id, arquivoBinario);
-		auto chave = make_pair(review.review_id, id * TAMANHO_MAX_STRUCT);
+		int rank = retonaNumeroAleatorio(0, reviews_totais);
+		auto review = retornaReviewEspecifica(rank, arquivoBinario);
+		auto chave = make_pair(review.review_id, rank * TAMANHO_MAX_STRUCT);
 		this->inserir(chave, timer);
 	}
 }

@@ -123,7 +123,9 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 				{
 					Timer timer("Total Btree");
 					timer.benchBTree(3, 200);
+				
 				}
+
 				break;
 			}
 		case sair:
@@ -144,8 +146,8 @@ int main(int argc, char* argv[])
 
 	vector<Review> reviews;
 
-	// menu(argv[1], reviews);
-	menu(arquivo_path, reviews);
+	menu(argv[1], reviews);
+	// menu(arquivo_path, reviews);
 
 	return 0;
 }

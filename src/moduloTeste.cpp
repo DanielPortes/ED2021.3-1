@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "parametros.h"
+#include "Parametros.h"
 #include "tabelaHash.h"
 #include "Timer.h"
 
@@ -111,19 +111,27 @@ void moduloTeste()
 			ArvoreB arvoreB(3);
 			Timer timer("BTree");
 			arvoreB.popularArvoreAleatoriamente(&timer, 1'000'000); // todo: remover timer
-			cout << "Digite a id a busca: ";
-			string input = string();
-			cin >> input;
-			auto retorno = arvoreB.procurar(input, &timer);
-			if (retorno == nullptr)
+			for (;;)
 			{
-				cout << "busca nao encontrada";
-				break;
+				cout << "Digite s para sair, ou ";
+				cout << "Digite a id a busca: ";
+				string input = string();
+				cin >> input;
+				if (input == "s")
+				{
+					break;
+				}
+				auto retorno = arvoreB.procurar(input, &timer);
+				if (!(retorno == nullptr))
+				{
+					cout << "\nbusca encontrada\n";
+					continue;
+				}
+				cout << "\nbusca nao encontrada\n";
 			}
-			retorno->imprimir();
 			break;
 		}
-		
+
 	case sair:
 		{
 			return;

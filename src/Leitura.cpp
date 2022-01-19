@@ -6,8 +6,8 @@
 #include <cstdlib>
 #include <memory>
 #include "ordenacao.h"
-#include "leitura.h"
-#include "parametros.h"
+#include "Leitura.h"
+#include "Parametros.h"
 #include "Timer.h"
 
 streampos inline tamanhoArquivo(fstream &arq)

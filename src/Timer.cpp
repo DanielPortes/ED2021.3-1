@@ -369,7 +369,14 @@ void Timer::buscaAleatoriaBTree(fstream& arquivoBinario, ArvoreB* arvore, Timer*
 		assert(false);
 	}
 	int rank = retonaNumeroAleatorio(0, reviews_totais);
+	// cout << rank << " ";
+
 	Review review = retornaReviewEspecifica(rank, arquivoBinario);
 
-	auto resultado = arvore->procurar(review.review_id, timer);
+	No* resultado = nullptr;
+	resultado = arvore->procurar(review.review_id, timer);
+	if (resultado == nullptr)
+	{
+		cout << "[NOT FOUND]" << endl;
+	}
 }

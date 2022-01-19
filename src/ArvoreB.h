@@ -25,7 +25,7 @@ public:
 
 	void imprimir();
 
-	No* procurar(string chave, Timer* timer); // Procurar uma chave na arvore
+	No* procurar(const string& chave, Timer* timer); // Procurar uma chave na arvore
 
 	friend class ArvoreB;
 };
@@ -47,7 +47,7 @@ public:
 
 	void imprimir();
 
-	No* procurar(string chave, Timer* timer);
+	No* procurar(const string& chave, Timer* timer);
 
 	void inserir(pair<string, int> chave, Timer* timer);
 

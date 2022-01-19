@@ -3,7 +3,7 @@
 
 #include <time.h>
 #include "leitura.h"
-#include"parametros.h"
+#include"Parametros.h"
 #include <cassert>
 #define A 1000000
 #include "arvoreVP.h"
