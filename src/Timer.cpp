@@ -319,8 +319,11 @@ void Timer::benchBTree(int trials, int ordem, const string& saidaPath)
 {
 	fstream saidaTxt("./" + saidaPath, ios::app | ios::out),
 	        arquivoBinario("./saidaBinaria.bin", ios::in | ios::binary);
-	int montanteComparacoesInsercao = 0;
-	int montanteComparacoesBusca = 0;
+	unsigned int montanteComparacoesInsercao = 0;
+	unsigned int montanteComparacoesBusca = 0;
+	unsigned int montanteTempoInsercao = 0;
+	unsigned int montanteTempoBusca = 0;
+
 	int qtd = 1'000'000;
 	for (int i = 0; i < trials; ++i)
 	{
@@ -334,6 +337,7 @@ void Timer::benchBTree(int trials, int ordem, const string& saidaPath)
 			saidaTxt << "TEMPO: " << cronometro.m_legenda << ": " << cronometro.m_duracao << "us (" << cronometro.
 				m_duracao * 0.001 << "ms)\n";
 			montanteComparacoesInsercao += cronometro.m_comparacoes;
+			montanteTempoInsercao += cronometro.m_duracao;
 			saidaTxt << "\tbreve resumo: comparacoes insercao = " << cronometro.m_comparacoes << endl;
 		}
 		msg.str(string());
@@ -346,8 +350,10 @@ void Timer::benchBTree(int trials, int ordem, const string& saidaPath)
 		cronometro.Stop();
 		saidaTxt << "\tbreve resumo: comparacoes busca = " << cronometro.m_comparacoes << endl;
 		saidaTxt << "TEMPO: " << cronometro.m_legenda << ": " << cronometro.m_duracao << "us (" << cronometro.
-			m_duracao * 0.001 << "ms)\n";
+			m_duracao * 0.001 << "ms)\n\n";
 		montanteComparacoesBusca += cronometro.m_comparacoes;
+		montanteTempoBusca += cronometro.m_duracao;
+
 		cronometro.zeraMedicoes();
 	}
 	this->Stop();
@@ -356,6 +362,8 @@ void Timer::benchBTree(int trials, int ordem, const string& saidaPath)
 	saidaTxt << "\tnumero de trials:" << trials << endl;
 	saidaTxt << "\tnumero de comparacoes medias insercao:" << montanteComparacoesInsercao / trials << endl;
 	saidaTxt << "\tnumero de comparacoes medias busca:" << montanteComparacoesBusca / trials << endl;
+	saidaTxt << "\ttempo medio de insercao:" << montanteTempoInsercao / trials * 0.001 << "ms\n";
+	saidaTxt << "\ttempo medio de busca:" << montanteTempoBusca / trials * 0.001 << "ms\n";
 	saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001 <<
 		"ms)\n" << endl << endl << endl;
 	zeraMedicoes();

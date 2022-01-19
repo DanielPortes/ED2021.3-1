@@ -9,7 +9,7 @@ class Timer;
 class No
 {
 private:
-	vector<pair<string, int>> chaves; // {id, localizacao}, eh a localizacao exata no arquivo bin
+	vector<pair<string, unsigned int>> chaves; // {id, localizacao}, eh a localizacao exata no arquivo bin
 	No** filhos;
 	int t; // Grau mínimo
 	int m; // g max
