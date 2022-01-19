@@ -108,9 +108,13 @@ void moduloTeste()
 		}
 	case BTree:
 		{
-			ArvoreB arvoreB(3);
+			cout << "Digite a ordem da B-Tree: ";
+			int ordem = 0;
+			cin >> ordem;
+
+			ArvoreB arvoreB(ordem);
 			Timer timer("BTree");
-			arvoreB.popularArvoreAleatoriamente(&timer, 1'000'000); // todo: remover timer
+			arvoreB.popularArvoreAleatoriamente(&timer, 1'000'000); 
 			for (;;)
 			{
 				cout << "Digite s para sair, ou ";

@@ -116,14 +116,21 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 			}
 		case BTree:
 			{
+				cout << "\n[AVISO] \t os modulos de testes da arvore b estao dentro da opcao modulo de teste\n";
+				cout << "Digite a ordem da primeira B-Tree: ";
+				int ordem = 0; // valor arbitrario
+				cin >> ordem;
+
 				{
 					Timer timer("Total Btree");
-					timer.benchBTree(3, 20);
+					timer.benchBTree(3, ordem);
 				}
+				cout << "Digite a ordem da segunda B-Tree: ";
+				int ordem2 = 0; // valor arbitrario
+				cin >> ordem;
 				{
 					Timer timer("Total Btree");
-					timer.benchBTree(3, 200);
-				
+					timer.benchBTree(3, ordem);
 				}
 
 				break;

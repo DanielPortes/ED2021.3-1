@@ -13,7 +13,7 @@ No::No(int ordem, bool folha)
 	this->t = ordem / 2;
 	this->folha = folha;
 
-	chaves.resize(m-1, {string(), 0});
+	chaves.resize(m - 1, {string(), 0});
 	// this->chaves = new pair<string, int>[m - 1];
 	filhos = new No*[m];
 
@@ -165,6 +165,11 @@ No* No::procurar(const string& chave, Timer* timer)
 
 ArvoreB::ArvoreB(int ordem)
 {
+	if (ordem <= 1)
+	{
+		cerr << "\nB-TREE criada com ordem menor ou igual a 1\n";
+		exit(313213);
+	}
 	raiz = nullptr;
 	t = ordem / 2;
 	m = ordem;
