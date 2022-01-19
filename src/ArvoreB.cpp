@@ -147,17 +147,11 @@ No* No::procurar(const string& chave, Timer* timer)
 	timer->acrecentaComparacoes();
 	if (chaves[i].first == chave)
 	{
-		// cout << "[FOUND]" << chaves[i].first ;
-		// cout << "\t[chave]" << chave << endl;
-
 		return this;
 	}
 	timer->acrecentaComparacoes();
 	if (folha)
 	{
-		// cout << "[NOT FOUND]" << endl;
-		// cout << "[NOT FOUND]" << chave << endl;
-
 		return nullptr;
 	}
 

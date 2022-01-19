@@ -114,7 +114,7 @@ void moduloTeste()
 
 			ArvoreB arvoreB(ordem);
 			Timer timer("BTree");
-			arvoreB.popularArvoreAleatoriamente(&timer, 1'000'000); 
+			arvoreB.popularArvoreAleatoriamente(&timer, 1'000'000);
 			for (;;)
 			{
 				cout << "Digite s para sair, ou ";
@@ -128,10 +128,10 @@ void moduloTeste()
 				auto retorno = arvoreB.procurar(input, &timer);
 				if (!(retorno == nullptr))
 				{
-					cout << "\nbusca encontrada\n";
+					cout << "busca encontrada\n\n";
 					continue;
 				}
-				cout << "\nbusca nao encontrada\n";
+				cout << "busca nao encontrada\n\n";
 			}
 			break;
 		}
