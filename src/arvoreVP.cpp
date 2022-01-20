@@ -2,7 +2,7 @@
 //#include "noVP.h"
 
 #include <time.h>
-#include "leitura.h"
+#include "Leitura.h"
 #include"Parametros.h"
 #include <cassert>
 #define A 1000000
