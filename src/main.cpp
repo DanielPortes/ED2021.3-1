@@ -130,7 +130,7 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 				cin >> ordem;
 				{
 					Timer timer("Total Btree");
-					timer.benchBTree(3, ordem);
+					timer.benchBTree(3, ordem2);
 				}
 
 				break;
