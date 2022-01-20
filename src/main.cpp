@@ -127,7 +127,7 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 				}
 				cout << "Digite a ordem da segunda B-Tree: ";
 				int ordem2 = 0; // valor arbitrario
-				cin >> ordem;
+				cin >> ordem2;
 				{
 					Timer timer("Total Btree");
 					timer.benchBTree(3, ordem2);
