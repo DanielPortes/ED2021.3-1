@@ -45,6 +45,13 @@ public:
 
 	void benchBTree(int trials, int ordem, const string& saidaPath = "saida.txt");
 
+	NoHF* getNoHF(char ch, int freq, NoHF* esq, NoHF* dir);
+	bool verificaFolha(NoHF* raiz);
+	void codificar(NoHF* raiz, string str, unordered_map<char, string> &mapaHuffman);
+	void codificaHuffman(string text,dadosParaDescompressao *dados);
+	void imprimeCodigosHuffmanAlt(dadosParaDescompressao *dados);
+
+
 	Timer(const Timer&) = delete;
 
 	Timer& operator=(const Timer&) = delete;

@@ -2,7 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
-
+#include <queue>
 #include <cassert>
 #include <sstream>
 
@@ -10,6 +10,8 @@
 #include "Leitura.h"
 #include "ordenacao.h"
 #include "Parametros.h"
+#define STRINGVAZIA ""
+
 
 Timer::Timer(std::string legenda)
 	: m_legenda(move(legenda)), m_tempoInicio(std::chrono::high_resolution_clock::now()), m_swaps(0),
@@ -383,3 +385,90 @@ void Timer::buscaAleatoriaBTree(fstream& arquivoBinario, ArvoreB* arvore, Timer*
 	auto resultado = arvore->procurar(review.review_id, timer);
 
 }
+
+//////////////////huffman///////////
+
+NoHF* Timer::getNoHF(char ch, int freq, NoHF* esq, NoHF* dir)
+{
+    NoHF* NoHFF = new NoHF();
+    NoHFF->ch = ch;
+    NoHFF->freq = freq;
+    NoHFF->esq = esq;
+    NoHFF->dir = dir;
+    return NoHFF;
+}
+bool Timer::verificaFolha(NoHF* raiz)
+{
+    return raiz->esq == nullptr && raiz->dir == nullptr;
+}
+void Timer::codificar(NoHF* raiz, string str, unordered_map<char, string> &mapaHuffman)
+{
+    if (raiz == nullptr)
+    {
+        return;
+    }
+    if (verificaFolha(raiz))
+    {
+        mapaHuffman[raiz->ch] = (str != STRINGVAZIA) ? str : "1";
+    }
+    codificar(raiz->esq, str + "0", mapaHuffman);
+    codificar(raiz->dir, str + "1", mapaHuffman);
+}
+
+
+void Timer::codificaHuffman(string text,dadosParaDescompressao *dados){
+	int i=0;
+    if (text == STRINGVAZIA)
+    {
+        return;
+    }
+    //mapa de frequencia
+    unordered_map<char, int> freq;
+    //preenchendo mapa
+    for (char ch: text)
+    {
+        freq[ch]++;
+    }
+    //cria��o da arvore e codificando mapa de huffman
+    priority_queue<NoHF*, vector<NoHF*>, comp> filaPrioridade;
+    for (auto pair: freq)
+    {
+        filaPrioridade.push(getNoHF(pair.first, pair.second, nullptr, nullptr));
+    }
+    while (filaPrioridade.size() != 1)
+    {
+        NoHF* esq = filaPrioridade.top();
+        filaPrioridade.pop();
+        NoHF* dir = filaPrioridade.top();
+        filaPrioridade.pop();
+        int auxSoma = esq->freq + dir->freq;
+        filaPrioridade.push(getNoHF('\0', auxSoma, esq, dir));
+    }
+    NoHF* raiz = filaPrioridade.top();
+    unordered_map<char, string> mapaHuffman;
+    codificar(raiz, STRINGVAZIA, mapaHuffman);
+    //preenchendo struct com dados para futura descompress�o
+    for (char ch: text)
+    {
+        dados->dadosComprimidos += mapaHuffman[ch];
+    }
+    dados->raiz=raiz;
+    for (auto pair: mapaHuffman) {
+        dados->caracteres[i]=pair.first;
+        dados->codigos[i]=pair.second;
+        i++;
+    }
+    dados->numeroDeCaracteres=i+1;
+    dados->mapaHuffman=mapaHuffman;
+}
+
+
+void Timer::imprimeCodigosHuffmanAlt(dadosParaDescompressao *dados){
+
+    int i=0;
+    cout <<endl<< "Os codigos dos caracteres sao:" << endl;
+    for(i=0; i<dados->numeroDeCaracteres; i++){
+        cout <<dados->caracteres[i]<<"|"<<dados->codigos[i]<<endl;
+    }
+}
+

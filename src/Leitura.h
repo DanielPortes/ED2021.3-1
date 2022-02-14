@@ -4,8 +4,21 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <unordered_map>
 using namespace std;
-
+struct NoHF
+{
+    char ch;
+    int freq;
+    NoHF *esq, *dir;
+};
+struct comp
+{
+    bool operator()(const NoHF* l, const NoHF* r) const
+    {
+        return l->freq > r->freq;
+    }
+};
 struct Review
 {
     string review_id;
@@ -13,6 +26,14 @@ struct Review
     int upvotes;
     string app_version;
     string posted_date;
+};
+struct dadosParaDescompressao
+{
+    NoHF *raiz;
+    string dadosComprimidos;
+    string caracteres[255],codigos[255];
+    unordered_map<char, string> mapaHuffman;
+    int numeroDeCaracteres;
 };
 
 struct Review;

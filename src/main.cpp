@@ -17,7 +17,8 @@ enum EscolhasChamada
 	sair = 's',
 	arvoreVerPre = 'v',
 	BTree = 'b',
-	tabela_Hash = 'h'
+	tabela_Hash = 'h',
+	huffman = 'c'
 };
 
 void menu(const string& caminhoEntrada, vector<Review>& reviews)
@@ -32,6 +33,7 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 		cout << "\tDigite 'h' para: tabelaHash() \n";
 		cout << "\tDigite 'v' para: arvoreVP() \n";
 		cout << "\tDigite 'b' para: BTree() \n";
+		cout << "\tDigite 'c' para: Huffman \n";
 		cout << "\tDigite 't' para: Modulo de teste \n";
 		cout << "\tDigite 's' para sair " << endl;
 
@@ -133,6 +135,16 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 					timer.benchBTree(3, ordem2);
 				}
 
+				break;
+			}
+		case huffman:
+			{
+				dadosParaDescompressao dados;
+				string aux="gdfkjasdhbfusiyfhbsuiyfgsufygsuyftsfyusgdfvuysdtgfsduytgbsdu7ygsfuysfuysftgsdyfgs7fy";
+				Timer timer("Huffman");
+				timer.codificaHuffman(aux,&dados);
+				cout << dados.dadosComprimidos<<endl;
+				timer.imprimeCodigosHuffmanAlt(&dados);
 				break;
 			}
 		case sair:
