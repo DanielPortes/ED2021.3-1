@@ -1,11 +1,25 @@
-cmake_minimum_required(VERSION 3.10)
-project(ED2021)
+cmake_minimum_required(VERSION 3.16)
+project(DCC012)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 include_directories(src)
 
-add_executable(ED2021
-        "src/main.cpp"
-        "src/Timer.cpp"
-        "src/Timer.h" "src/Leitura.h" "src/Leitura.cpp" "src/Parametros.h" "src/ordenacao.cpp" "src/ordenacao.h" "src/tabelaHash.h" "src/tabelaHash.cpp" "src/moduloTeste.cpp")
+add_executable(DCC012
+        src/ArvoreB.cpp
+        src/ArvoreB.h
+        src/arvoreVP.cpp
+        src/arvoreVP.h
+        src/Leitura.cpp
+        src/Leitura.h
+        src/main.cpp
+        src/moduloArvoreVP.h
+        src/moduloTeste.cpp
+        src/noVP.h
+        src/ordenacao.cpp
+        src/ordenacao.h
+        src/Parametros.h
+        src/tabelaHash.cpp
+        src/tabelaHash.h
+        src/Timer.cpp
+        src/Timer.h)

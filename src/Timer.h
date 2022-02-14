@@ -1,52 +1,61 @@
-#ifndef TIMER_H
-#define TIMER_H
-
+#pragma once
 #include <chrono>
 #include <string>
 
+#include "ArvoreB.h"
 #include "Leitura.h"
 
+class ArvoreB;
 using namespace std;
 using namespace std::chrono;
 
 class Timer
 {
 private:
-    string m_legenda;
-    time_point<high_resolution_clock> m_tempoInicio;
-    long long m_duracao;
-    unsigned long m_swaps;
-    unsigned long m_comparacoes;
+	string m_legenda;
+	time_point<high_resolution_clock> m_tempoInicio;
+	long long m_duracao;
+	unsigned long m_swaps;
+	unsigned long m_comparacoes;
 
 public:
-    Timer(string legenda);
+	Timer(string legenda);
 
-    ~Timer();
+	~Timer();
 
-    void Stop();
+	void Stop();
 
-    void acrecentaSwaps();
+	void acrecentaSwaps();
 
-    void acrecentaComparacoes();
+	void acrecentaComparacoes();
 
-    void benchHeapSort(int trials, const string &saidaPath = "saida.txt");
+	void benchHeapSort(int trials, const string& saidaPath = "saida.txt");
 
-    void benchQuickSort(int trials, const string &saidaPath = "saida.txt");
+	void benchQuickSort(int trials, const string& saidaPath = "saida.txt");
 
-    void benchCombSort(int trials, const string &saidaPath = "saida.txt");
+	void benchCombSort(int trials, const string& saidaPath = "saida.txt");
 
-    void ModuloTesteHeapSort(int trials, const string &saidaPath = "teste.txt");
+	void ModuloTesteHeapSort(int trials, const string& saidaPath = "teste.txt");
 
-    void ModuloTesteQuickSort(int trials, const string &saidaPath = "teste.txt");
+	void ModuloTesteQuickSort(int trials, const string& saidaPath = "teste.txt");
 
-    void ModuloTesteCombSort(int trials, const string &saidaPath = "teste.txt");
+	void ModuloTesteCombSort(int trials, const string& saidaPath = "teste.txt");
 
-    Timer(const Timer &) = delete;
+	void buscaAleatoriaBTree(fstream& arquivoBinario, ArvoreB* arvore, Timer* timer);
 
-    Timer &operator=(const Timer &) = delete;
+	void benchBTree(int trials, int ordem, const string& saidaPath = "saida.txt");
+
+	NoHF* getNoHF(char ch, int freq, NoHF* esq, NoHF* dir);
+	bool verificaFolha(NoHF* raiz);
+	void codificar(NoHF* raiz, string str, unordered_map<char, string> &mapaHuffman);
+	void codificaHuffman(string text,dadosParaDescompressao *dados);
+	void imprimeCodigosHuffmanAlt(dadosParaDescompressao *dados);
+
+
+	Timer(const Timer&) = delete;
+
+	Timer& operator=(const Timer&) = delete;
 
 private:
-    void zeraMedicoes();
+	void zeraMedicoes();
 };
-
-#endif

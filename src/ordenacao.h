@@ -1,5 +1,6 @@
-#ifndef ORDENACAO_H
-#define ORDENACAO_H
+
+#pragma once
+
 
 #include "Leitura.h"
 #include "Timer.h"
@@ -20,5 +21,3 @@ int nextGap(int gap);
 void quickSortHash(vector<pair<string, int>> &vetor, int inicio, int fim);
 
 int quickSortHashAux(vector<pair<string, int>> &vet, int inicio, int fim);
-
-#endif // !ORDENACAO_H

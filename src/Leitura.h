@@ -1,12 +1,24 @@
-#ifndef LEITURA_H
-#define LEITURA_H
+#pragma once
+
 
 #include <vector>
 #include <string>
 #include <fstream>
-
+#include <unordered_map>
 using namespace std;
-
+struct NoHF
+{
+    char ch;
+    int freq;
+    NoHF *esq, *dir;
+};
+struct comp
+{
+    bool operator()(const NoHF* l, const NoHF* r) const
+    {
+        return l->freq > r->freq;
+    }
+};
 struct Review
 {
     string review_id;
@@ -15,13 +27,13 @@ struct Review
     string app_version;
     string posted_date;
 };
-
-struct desempenho
+struct dadosParaDescompressao
 {
-    string nome_algoritimo;           // Nome do algoritmo (Nome)
-    int numComparacoes;               // Guarda a quantidade de comparacoes feitas em cada uma das repeticoes        
-    int numTrocas;                    // Guarda a quantidade de trocas feitas em cada uma das repeticoes    
-    double tempo;                        // Guarda o tempo de execucao            
+    NoHF *raiz;
+    string dadosComprimidos;
+    string caracteres[255],codigos[255];
+    unordered_map<char, string> mapaHuffman;
+    int numeroDeCaracteres;
 };
 
 struct Review;
@@ -45,5 +57,3 @@ void escreverSaidaTxt(fstream &saidaTxt, vector<Review> &reviews);
 void inicializaVetorAleatorio(vector<Review> &reviews, int size);
 
 void inicializaVetorAleatorio(vector<Review> *reviews, int size);
-
-#endif // !LEITURA_H

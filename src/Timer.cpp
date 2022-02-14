@@ -2,13 +2,17 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
-
+#include <queue>
 #include <cassert>
 #include <sstream>
 
 #include "Timer.h"
+#include "ArvoreB.h"
 #include "Leitura.h"
 #include "ordenacao.h"
+#include "Parametros.h"
+#define STRINGVAZIA ""
+
 
 Timer::Timer(std::string legenda)
 	: m_legenda(move(legenda)), m_tempoInicio(std::chrono::high_resolution_clock::now()), m_swaps(0),
@@ -30,6 +34,22 @@ void Timer::Stop()
 	auto fim = std::chrono::time_point_cast<std::chrono::microseconds>(fimTempo).time_since_epoch().count();
 
 	m_duracao = fim - inicio;
+}
+
+void Timer::acrecentaSwaps()
+{
+	++m_swaps;
+}
+
+void Timer::acrecentaComparacoes()
+{
+	++m_comparacoes;
+}
+
+void Timer::zeraMedicoes()
+{
+	m_comparacoes = 0;
+	m_swaps = 0;
 }
 
 void Timer::benchHeapSort(int trials, const string& saidaPath)
@@ -71,7 +91,8 @@ void Timer::benchHeapSort(int trials, const string& saidaPath)
 		saidaTxt << "\tnumero de trials:" << trials << endl;
 		saidaTxt << "\tnumero de comparacoes medias:" << montanteComparacoes / trials << endl;
 		saidaTxt << "\tnumero de trocas medias:" << montanteSwaps / trials << endl;
-		saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001 <<
+		saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001
+			<<
 			"ms)\n";
 		saidaTxt << endl << endl << endl;
 		zeraMedicoes();
@@ -241,7 +262,8 @@ void Timer::benchQuickSort(int trials, const string& saidaPath)
 		saidaTxt << "\tnumero de trials:" << trials << endl;
 		saidaTxt << "\tnumero de comparacoes medias:" << montanteComparacoes / trials << endl;
 		saidaTxt << "\tnumero de trocas medias:" << montanteSwaps / trials << endl;
-		saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001 <<
+		saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001
+			<<
 			"ms)\n";
 		saidaTxt << endl << endl << endl;
 		zeraMedicoes();
@@ -288,25 +310,166 @@ void Timer::benchCombSort(int trials, const string& saidaPath)
 		saidaTxt << "\tnumero de trials:" << trials << endl;
 		saidaTxt << "\tnumero de comparacoes medias:" << montanteComparacoes / trials << endl;
 		saidaTxt << "\tnumero de trocas medias:" << montanteSwaps / trials << endl;
-		saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001 <<
+		saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001
+			<<
 			"ms)\n";
 		saidaTxt << endl << endl << endl;
 		zeraMedicoes();
 	}
 }
 
-void Timer::acrecentaSwaps()
+void Timer::benchBTree(int trials, int ordem, const string& saidaPath)
 {
-	++m_swaps;
+	fstream saidaTxt("./" + saidaPath, ios::app | ios::out),
+	        arquivoBinario("./saidaBinaria.bin", ios::in | ios::binary);
+	unsigned int montanteComparacoesInsercao = 0;
+	unsigned int montanteComparacoesBusca = 0;
+	unsigned int montanteTempoInsercao = 0;
+	unsigned int montanteTempoBusca = 0;
+
+	int qtd = 1'000'000;
+	for (int i = 0; i < trials; ++i)
+	{
+		ArvoreB arvoreB(ordem);
+		ostringstream msg;
+		msg << "Insercao benchBTree, trial " << i;
+		{
+			Timer cronometro(msg.str());
+			arvoreB.popularArvoreAleatoriamente(&cronometro, qtd);
+			cronometro.Stop();
+			saidaTxt << "TEMPO: " << cronometro.m_legenda << ": " << cronometro.m_duracao << "us (" << cronometro.
+				m_duracao * 0.001 << "ms)\n";
+			montanteComparacoesInsercao += cronometro.m_comparacoes;
+			montanteTempoInsercao += cronometro.m_duracao;
+			saidaTxt << "\tbreve resumo: comparacoes insercao = " << cronometro.m_comparacoes << endl;
+		}
+		msg.str(string());
+		msg << "\tbusca BTree, trial " << i;
+		Timer cronometro(msg.str());
+		for (int i = 0; i < 100; ++i) // busca
+		{
+			buscaAleatoriaBTree(arquivoBinario, &arvoreB, &cronometro);
+		}
+		cronometro.Stop();
+		saidaTxt << "\tbreve resumo: comparacoes busca = " << cronometro.m_comparacoes << endl;
+		saidaTxt << "TEMPO: " << cronometro.m_legenda << ": " << cronometro.m_duracao << "us (" << cronometro.
+			m_duracao * 0.001 << "ms)\n\n";
+		montanteComparacoesBusca += cronometro.m_comparacoes;
+		montanteTempoBusca += cronometro.m_duracao;
+
+		cronometro.zeraMedicoes();
+	}
+	this->Stop();
+	saidaTxt << "\nresumo algoritmo B Tree para size = " << qtd; // todo: numero magico
+	saidaTxt << "\nresumo algoritmo B Tree para ordem = " << ordem << endl; // todo: numero magico
+	saidaTxt << "\tnumero de trials:" << trials << endl;
+	saidaTxt << "\tnumero de comparacoes medias insercao:" << montanteComparacoesInsercao / trials << endl;
+	saidaTxt << "\tnumero de comparacoes medias busca:" << montanteComparacoesBusca / trials << endl;
+	saidaTxt << "\ttempo medio de insercao:" << montanteTempoInsercao / trials * 0.001 << " ms\n";
+	saidaTxt << "\ttempo medio de busca:" << montanteTempoBusca / trials * 0.001 << " ms\n";
+	saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001 <<
+		"ms)\n" << endl << endl << endl;
+	zeraMedicoes();
 }
 
-void Timer::acrecentaComparacoes()
+void Timer::buscaAleatoriaBTree(fstream& arquivoBinario, ArvoreB* arvore, Timer* timer)
 {
-	++m_comparacoes;
+	if (arquivoBinario.fail())
+	{
+		cerr << "ERRO: arquivo nao pode ser aberto na funcao buscaAleatoriaBTree()";
+		assert(false);
+	}
+	int rank = retonaNumeroAleatorio(0, reviews_totais);
+
+	Review review = retornaReviewEspecifica(rank, arquivoBinario);
+
+	auto resultado = arvore->procurar(review.review_id, timer);
+
 }
 
-void Timer::zeraMedicoes()
+//////////////////huffman///////////
+
+NoHF* Timer::getNoHF(char ch, int freq, NoHF* esq, NoHF* dir)
 {
-	m_comparacoes = 0;
-	m_swaps = 0;
+    NoHF* NoHFF = new NoHF();
+    NoHFF->ch = ch;
+    NoHFF->freq = freq;
+    NoHFF->esq = esq;
+    NoHFF->dir = dir;
+    return NoHFF;
 }
+bool Timer::verificaFolha(NoHF* raiz)
+{
+    return raiz->esq == nullptr && raiz->dir == nullptr;
+}
+void Timer::codificar(NoHF* raiz, string str, unordered_map<char, string> &mapaHuffman)
+{
+    if (raiz == nullptr)
+    {
+        return;
+    }
+    if (verificaFolha(raiz))
+    {
+        mapaHuffman[raiz->ch] = (str != STRINGVAZIA) ? str : "1";
+    }
+    codificar(raiz->esq, str + "0", mapaHuffman);
+    codificar(raiz->dir, str + "1", mapaHuffman);
+}
+
+
+void Timer::codificaHuffman(string text,dadosParaDescompressao *dados){
+	int i=0;
+    if (text == STRINGVAZIA)
+    {
+        return;
+    }
+    //mapa de frequencia
+    unordered_map<char, int> freq;
+    //preenchendo mapa
+    for (char ch: text)
+    {
+        freq[ch]++;
+    }
+    //cria��o da arvore e codificando mapa de huffman
+    priority_queue<NoHF*, vector<NoHF*>, comp> filaPrioridade;
+    for (auto pair: freq)
+    {
+        filaPrioridade.push(getNoHF(pair.first, pair.second, nullptr, nullptr));
+    }
+    while (filaPrioridade.size() != 1)
+    {
+        NoHF* esq = filaPrioridade.top();
+        filaPrioridade.pop();
+        NoHF* dir = filaPrioridade.top();
+        filaPrioridade.pop();
+        int auxSoma = esq->freq + dir->freq;
+        filaPrioridade.push(getNoHF('\0', auxSoma, esq, dir));
+    }
+    NoHF* raiz = filaPrioridade.top();
+    unordered_map<char, string> mapaHuffman;
+    codificar(raiz, STRINGVAZIA, mapaHuffman);
+    //preenchendo struct com dados para futura descompress�o
+    for (char ch: text)
+    {
+        dados->dadosComprimidos += mapaHuffman[ch];
+    }
+    dados->raiz=raiz;
+    for (auto pair: mapaHuffman) {
+        dados->caracteres[i]=pair.first;
+        dados->codigos[i]=pair.second;
+        i++;
+    }
+    dados->numeroDeCaracteres=i+1;
+    dados->mapaHuffman=mapaHuffman;
+}
+
+
+void Timer::imprimeCodigosHuffmanAlt(dadosParaDescompressao *dados){
+
+    int i=0;
+    cout <<endl<< "Os codigos dos caracteres sao:" << endl;
+    for(i=0; i<dados->numeroDeCaracteres; i++){
+        cout <<dados->caracteres[i]<<"|"<<dados->codigos[i]<<endl;
+    }
+}
+

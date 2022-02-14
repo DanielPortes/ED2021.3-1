@@ -1,5 +1,4 @@
-#ifndef TABELAHASH_H_INCLUDED
-#define TABELAHASH_H_INCLUDED
+#pragma once
 
 #include "Leitura.h"
 
@@ -35,5 +34,3 @@ public:
 
     void escreveTabelaHash();
 };
-
-#endif

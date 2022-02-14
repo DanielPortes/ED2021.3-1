@@ -4,6 +4,7 @@
 
 #include <iostream>
 
+#include "ordenacao.h"
 #include "Leitura.h"
 #include "Timer.h"
 

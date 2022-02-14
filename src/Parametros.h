@@ -1,5 +1,5 @@
-#ifndef PARAMETROS_H
-#define PARAMETROS_H
+#pragma once
+
 
 const auto arquivo_path = "D:/Users/DANIEL/Downloads/Tiktok/tiktok_app_reviews.csv";
 
@@ -13,5 +13,4 @@ const int TAMANHO_MAX_DATE = 21;
 const int TAMANHO_MAX_STRUCT = TAMANHO_MAX_ID + TAMANHO_MAX_APP_VERSION + TAMANHO_MAX_DATE + TAMANHO_MAX_UPVOTES +
                                TAMANHO_MAX_TEXT;
 
-#endif // !PARAMETROS_H
 

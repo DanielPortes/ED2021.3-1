@@ -5,7 +5,6 @@
 #include <strstream>
 #include <cstdlib>
 #include <memory>
-
 #include "ordenacao.h"
 #include "Leitura.h"
 #include "Parametros.h"
