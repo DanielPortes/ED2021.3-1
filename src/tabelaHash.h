@@ -1,7 +1,7 @@
 #ifndef TABELAHASH_H_INCLUDED
 #define TABELAHASH_H_INCLUDED
 
-#include "leitura.h"
+#include "Leitura.h"
 
 using namespace std;
 
@@ -14,7 +14,7 @@ vector<pair<string, int>> testaTabelaHash(int hashSize);
 class tabelaHash
 {
 private:
-    vector<pair<string, int>> vetor;
+    vector<pair<string, int>>* vetor;
     int m_tam;
     int m_insertionsFails;
     int m_colisoes;

@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-#include "leitura.h"
+#include "Leitura.h"
 #include "Timer.h"
 
 void heapSort(std::vector<Review>& reviews, int n, Timer* timer)

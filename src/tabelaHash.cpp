@@ -4,8 +4,8 @@
 #include <cassert>
 
 #include "tabelaHash.h"
-#include "leitura.h"
-#include "parametros.h"
+#include "Leitura.h"
+#include "Parametros.h"
 #include "ordenacao.h"
 
 using namespace std;
@@ -16,16 +16,20 @@ int constexpr PRIME2 = 157;
 tabelaHash::tabelaHash(int tam)
         : m_tam{tam}, m_insertionsFails{}, m_colisoes{}
 {
-    vetor.resize(tam);
+	vetor = new vector<pair<string, int>>;
+	vetor->resize(tam);
 
     for (int i = 0; i < tam; i++)
     {
-        vetor[i].first = {};
-        vetor[i].second = {};
+        vetor->at(i).first= {};
+        vetor->at(i).second = {};
     }
 }
 
-tabelaHash::~tabelaHash() = default;
+tabelaHash::~tabelaHash()
+{
+	delete vetor;
+}
 
 int tabelaHash::hashfunction(string str, int prime, int tam)
 {
@@ -60,10 +64,10 @@ void tabelaHash::insertion(const string &key)
     {
         unsigned long index = hash(key, i);
 
-        if (vetor[index].first.empty() || vetor[index].first == key) // ou a vaga esta disponivel ou a chave eh identica
+        if (vetor->at(index).first.empty() || vetor->at(index).first == key) // ou a vaga esta disponivel ou a chave eh identica
         {
-            vetor[index].first = key;
-            vetor[index].second++;
+            vetor->at(index).first = key;
+            vetor->at(index).second++;
             return;
         } else
         {
@@ -101,11 +105,11 @@ void escreveNMaisFrequentes(vector<pair<string, int>> &vetor, int nPrimeiros, co
 vector<pair<string, int>> tabelaHash::retornaApenasElementosPreenchidosVetor()
 {
 	vector<pair<string, int>> temp;
-	for (int i = 0; i < vetor.size(); ++i)
+	for (int i = 0; i < vetor->size(); ++i)
 	{
-		if (!vetor[i].first.empty())
+		if (!vetor->at(i).first.empty())
 		{
-			temp.push_back(vetor[i]);
+			temp.push_back(vetor->at(i));
 		}
 	}
 	return temp;
@@ -119,9 +123,9 @@ void tabelaHash::escreveTabelaHash() // util para visualizar distribuicao
 		cerr << "ERRO: arquivo nao pode ser aberto na funcao escreveTabelaHash()";
 		assert(false);
 	}
-	for (int i = 0; i < vetor.size(); ++i)
+	for (int i = 0; i < vetor->size(); ++i)
 	{
-		saidaTxt << vetor[i].first << " : " << vetor[i].second << ",\t";
+		saidaTxt << vetor->at(i).first << " : " << vetor->at(i).second << ",\t";
 		if (!((i + 1) % 10))
 		{
 			saidaTxt << endl;

@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "parametros.h"
+#include "Parametros.h"
 #include "tabelaHash.h"
 #include "Timer.h"
 
@@ -57,7 +57,7 @@ void moduloTeste()
             cin >> N;
             vector<Review> reviews(N);
             fstream arquivoBinario("./saidaBinaria.bin", ios::in | ios::binary);
-            fstream arquivoTexto("./saidaTxt.txt", ios::in | ios::trunc | ios::out);
+            fstream arquivoTexto("./saidaTxt.txt", ios::in | ios::out);
             for (int i = 0; i < N; i++)
             {
                 reviews[i] = retornaReviewEspecifica(retonaNumeroAleatorio(0, reviews_totais), arquivoBinario);

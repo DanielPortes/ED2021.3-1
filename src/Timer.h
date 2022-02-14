@@ -4,7 +4,7 @@
 #include <chrono>
 #include <string>
 
-#include "leitura.h"
+#include "Leitura.h"
 
 using namespace std;
 using namespace std::chrono;

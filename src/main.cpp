@@ -1,10 +1,10 @@
 // ED2.cpp: define o ponto de entrada para o aplicativo.
 //
-#include "leitura.h"
+#include "Leitura.h"
 #include "Timer.h"
 #include <iostream>
 
-#include "parametros.h"
+#include "Parametros.h"
 #include "tabelaHash.h"
 
 using namespace std;
@@ -103,8 +103,8 @@ int main(int argc, char *argv[])
 
     vector<Review> reviews;
 
-    menu(argv[1], reviews);
-     // menu(arquivo_path, reviews);
+    // menu(argv[1], reviews);
+     menu(arquivo_path, reviews);
 
     return 0;
 }

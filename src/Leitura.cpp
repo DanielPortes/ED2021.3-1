@@ -7,8 +7,8 @@
 #include <memory>
 
 #include "ordenacao.h"
-#include "leitura.h"
-#include "parametros.h"
+#include "Leitura.h"
+#include "Parametros.h"
 #include "Timer.h"
 
 streampos inline tamanhoArquivo(fstream &arq)
@@ -108,7 +108,9 @@ void escreverSaidaBinaria(vector<Review> &reviews)
         saidaBinaria.write(reviews[i].app_version.c_str(), TAMANHO_MAX_APP_VERSION);
         saidaBinaria.write(reviews[i].posted_date.c_str(), TAMANHO_MAX_DATE);
     }
-    reviews.clear(); // forcando o desalocamento previo
+
+    vector<Review>().swap(reviews);
+    // reviews.clear(); // forcando o desalocamento previo
 }
 
 void imprimeReviewEspecifica(int indice, fstream &entradaBinaria)

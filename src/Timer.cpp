@@ -7,7 +7,7 @@
 #include <sstream>
 
 #include "Timer.h"
-#include "leitura.h"
+#include "Leitura.h"
 #include "ordenacao.h"
 
 Timer::Timer(std::string legenda)

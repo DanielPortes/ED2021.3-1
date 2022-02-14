@@ -1,7 +1,7 @@
 #ifndef ORDENACAO_H
 #define ORDENACAO_H
 
-#include "leitura.h"
+#include "Leitura.h"
 #include "Timer.h"
 
 // HeapSort
