@@ -50,6 +50,7 @@ public:
 	void codificar(NoHF* raiz, string str, unordered_map<char, string> &mapaHuffman);
 	void codificaHuffman(string text,dadosParaDescompressao *dados);
 	void imprimeCodigosHuffmanAlt(dadosParaDescompressao *dados);
+	void descomprimir(string *texto,dadosParaDescompressao *dados);
 
 
 	Timer(const Timer&) = delete;

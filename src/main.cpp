@@ -141,10 +141,13 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 			{
 				dadosParaDescompressao dados;
 				string aux="gdfkjasdhbfusiyfhbsuiyfgsufygsuyftsfyusgdfvuysdtgfsduytgbsdu7ygsfuysfuysftgsdyfgs7fy";
+				string destinoDescompressao;
 				Timer timer("Huffman");
 				timer.codificaHuffman(aux,&dados);
 				cout << dados.dadosComprimidos<<endl;
 				timer.imprimeCodigosHuffmanAlt(&dados);
+				timer.descomprimir(&destinoDescompressao,&dados);
+				cout << destinoDescompressao<<endl;				
 				break;
 			}
 		case sair:

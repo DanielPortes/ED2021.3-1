@@ -473,3 +473,19 @@ void Timer::imprimeCodigosHuffmanAlt(dadosParaDescompressao *dados){
     }
 }
 
+void Timer::descomprimir(string *texto,dadosParaDescompressao *dados){
+    cout<<"iniciando descompressao ..."<<endl;
+    string aux=STRINGVAZIA;
+    *texto=STRINGVAZIA;
+    int i;
+    for(i=0;i<dados->dadosComprimidos.size();i++){
+        aux+=dados->dadosComprimidos[i];
+        for(int j=0;j<dados->numeroDeCaracteres;j++){
+            if(aux==dados->codigos[j]){
+                *texto+=dados->caracteres[j];
+				aux=STRINGVAZIA;
+            }
+        }
+    }
+    cout << "descompressao adaptada "<<endl;
+}
