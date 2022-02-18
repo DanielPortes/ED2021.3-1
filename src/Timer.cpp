@@ -460,9 +460,17 @@ void Timer::codificaHuffman(string text,dadosParaDescompressao *dados){
         i++;
     }
     dados->numeroDeCaracteres=i+1;
-    dados->mapaHuffman=mapaHuffman;
+    //dados->mapaHuffman=mapaHuffman;
 }
-
+void Timer::codificaNAleatorios(int n,dadosParaDescompressao *dados){
+	vector <Review> reviews;
+	string auxConcatena=STRINGVAZIA;
+	inicializaVetorAleatorio(&reviews,n);
+	for (int i=0;i<n;i++){
+		auxConcatena+=reviews[i].review_text;
+	}
+	codificaHuffman(auxConcatena,dados);
+}
 
 void Timer::imprimeCodigosHuffmanAlt(dadosParaDescompressao *dados){
 

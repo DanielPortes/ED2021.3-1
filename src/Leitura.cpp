@@ -226,3 +226,14 @@ void inicializaVetorAleatorio(vector<Review> *reviews, int size)
         (*reviews)[j] = retornaReviewEspecifica(retonaNumeroAleatorio(0, reviews_totais), arquivoBinario);
     }
 }
+
+void escreverBinarioHuffman(string dadosComprimidos){
+    fstream saidaBinariaHuffman("./saidaBinariaHuffman.bin", ios::binary | ios::trunc | ios::in | ios::out);
+    if (!saidaBinariaHuffman.is_open())
+    {
+        cerr <<
+             "ERRO: arquivo nao pode ser aberto \n\t escreveBin() \n\t provavelmente nao foi possivel criar o arquivo, peco que crie manualmente se for o caso\n";
+        assert(false);
+    }
+    saidaBinariaHuffman << dadosComprimidos;
+}
