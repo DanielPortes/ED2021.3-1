@@ -32,7 +32,6 @@ struct dadosParaDescompressao
     NoHF *raiz;
     string dadosComprimidos;
     string caracteres[255],codigos[255];
-    //unordered_map<char, string> mapaHuffman;
     int numeroDeCaracteres;
 };
 
@@ -51,7 +50,10 @@ Review retornaReviewEspecifica(int indice, fstream &arquivoBinario);
 void moduloTeste();
 
 void escreverSaidaBinaria(vector<Review> &reviews);
+
 void escreverBinarioHuffman(string dadosComprimidos);
+
+void binDescomprimir(string destinoDescompressao);
 
 void escreverSaidaTxt(fstream &saidaTxt, vector<Review> &reviews);
 

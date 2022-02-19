@@ -149,7 +149,8 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 				//cout << dados.dadosComprimidos<<endl;
 				timer.imprimeCodigosHuffmanAlt(&dados);
 				timer.descomprimir(&destinoDescompressao,&dados);
-				//cout << destinoDescompressao<<endl;				
+				//cout << destinoDescompressao<<endl;	
+				binDescomprimir(destinoDescompressao);			
 				break;
 			}
 		case sair:

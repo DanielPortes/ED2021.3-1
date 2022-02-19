@@ -228,7 +228,7 @@ void inicializaVetorAleatorio(vector<Review> *reviews, int size)
 }
 
 void escreverBinarioHuffman(string dadosComprimidos){
-    fstream saidaBinariaHuffman("./saidaBinariaHuffman.bin", ios::binary | ios::trunc | ios::in | ios::out);
+    fstream saidaBinariaHuffman("./reviewsComp.bin", ios::binary | ios::trunc | ios::in | ios::out);
     if (!saidaBinariaHuffman.is_open())
     {
         cerr <<
@@ -236,4 +236,16 @@ void escreverBinarioHuffman(string dadosComprimidos){
         assert(false);
     }
     saidaBinariaHuffman << dadosComprimidos;
+}
+
+void binDescomprimir(string destinoDescompressao){
+    fstream saidaBinariaDescompressao("./reviewsOrig.bin", ios::binary | ios::trunc | ios::in | ios::out);
+    if (!saidaBinariaDescompressao.is_open())
+    {
+        cerr <<
+             "ERRO: arquivo nao pode ser aberto \n\t escreveBin() \n\t provavelmente nao foi possivel criar o arquivo, peco que crie manualmente se for o caso\n";
+        assert(false);
+    }
+    saidaBinariaDescompressao << destinoDescompressao;
+    cout<<"Arquivo reviewsComp.bin criado."<< endl;
 }
