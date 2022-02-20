@@ -36,7 +36,7 @@ struct dadosParaDescompressao
 };
 
 struct Review;
-
+streampos inline tamanhoArquivo(fstream& arq);
 void lerArquivoCSV(const string &pathCSV, vector<Review> &reviews);
 
 int retonaNumeroAleatorio(int min, int max);

@@ -11,8 +11,8 @@
 #include "Leitura.h"
 #include "ordenacao.h"
 #include "Parametros.h"
-#define STRINGVAZIA ""
 
+#define STRINGVAZIA ""
 
 Timer::Timer(std::string legenda)
 	: m_legenda(move(legenda)), m_tempoInicio(std::chrono::high_resolution_clock::now()), m_swaps(0),
@@ -384,116 +384,197 @@ void Timer::buscaAleatoriaBTree(fstream& arquivoBinario, ArvoreB* arvore, Timer*
 	Review review = retornaReviewEspecifica(rank, arquivoBinario);
 
 	auto resultado = arvore->procurar(review.review_id, timer);
-
 }
 
-//////////////////huffman///////////
+//////////////////Huffman///////////
 
 NoHF* Timer::getNoHF(char ch, int freq, NoHF* esq, NoHF* dir)
 {
-    NoHF* NoHFF = new NoHF();
-    NoHFF->ch = ch;
-    NoHFF->freq = freq;
-    NoHFF->esq = esq;
-    NoHFF->dir = dir;
-    return NoHFF;
+	NoHF* NoHFF = new NoHF();
+	NoHFF->ch = ch;
+	NoHFF->freq = freq;
+	NoHFF->esq = esq;
+	NoHFF->dir = dir;
+	return NoHFF;
 }
+
 bool Timer::verificaFolha(NoHF* raiz)
 {
-    return raiz->esq == nullptr && raiz->dir == nullptr;
+	return raiz->esq == nullptr && raiz->dir == nullptr;
 }
-void Timer::codificar(NoHF* raiz, string str, unordered_map<char, string> &mapaHuffman)
+
+void Timer::codificar(NoHF* raiz, string str, unordered_map<char, string>& mapaHuffman)
 {
-    if (raiz == nullptr)
-    {
-        return;
-    }
-    if (verificaFolha(raiz))
-    {
-        mapaHuffman[raiz->ch] = (str != STRINGVAZIA) ? str : "1";
-    }
-    codificar(raiz->esq, str + "0", mapaHuffman);
-    codificar(raiz->dir, str + "1", mapaHuffman);
-}
-
-
-void Timer::codificaHuffman(string text,dadosParaDescompressao *dados){
-	int i=0;
-    if (text == STRINGVAZIA)
-    {
-        return;
-    }
-    //mapa de frequencia
-    unordered_map<char, int> freq;
-    //preenchendo mapa
-    for (char ch: text)
-    {
-        freq[ch]++;
-    }
-    //cria��o da arvore e codificando mapa de huffman
-    priority_queue<NoHF*, vector<NoHF*>, comp> filaPrioridade;
-    for (auto pair: freq)
-    {
-        filaPrioridade.push(getNoHF(pair.first, pair.second, nullptr, nullptr));
-    }
-    while (filaPrioridade.size() != 1)
-    {
-        NoHF* esq = filaPrioridade.top();
-        filaPrioridade.pop();
-        NoHF* dir = filaPrioridade.top();
-        filaPrioridade.pop();
-        int auxSoma = esq->freq + dir->freq;
-        filaPrioridade.push(getNoHF('\0', auxSoma, esq, dir));
-    }
-    NoHF* raiz = filaPrioridade.top();
-    unordered_map<char, string> mapaHuffman;
-    codificar(raiz, STRINGVAZIA, mapaHuffman);
-    //preenchendo struct com dados para futura descompress�o
-    for (char ch: text)
-    {
-        dados->dadosComprimidos += mapaHuffman[ch];
-    }
-    dados->raiz=raiz;
-    for (auto pair: mapaHuffman) {
-        dados->caracteres[i]=pair.first;
-        dados->codigos[i]=pair.second;
-        i++;
-    }
-    dados->numeroDeCaracteres=i+1;
-    //dados->mapaHuffman=mapaHuffman;
-}
-void Timer::codificaNAleatorios(int n,dadosParaDescompressao *dados){
-	vector <Review> reviews;
-	string auxConcatena=STRINGVAZIA;
-	inicializaVetorAleatorio(&reviews,n);
-	for (int i=0;i<n;i++){
-		auxConcatena+=reviews[i].review_text;
+	if (raiz == nullptr)
+	{
+		return;
 	}
-	codificaHuffman(auxConcatena,dados);
+	if (verificaFolha(raiz))
+	{
+		mapaHuffman[raiz->ch] = (str != STRINGVAZIA) ? str : "1";
+	}
+	codificar(raiz->esq, str + "0", mapaHuffman);
+	codificar(raiz->dir, str + "1", mapaHuffman);
 }
 
-void Timer::imprimeCodigosHuffmanAlt(dadosParaDescompressao *dados){
+void Timer::codificaHuffman(string text, dadosParaDescompressao* dados)
+{
+	int i = 0;
+	if (text == STRINGVAZIA)
+	{
+		return;
+	}
+	//mapa de frequencia
+	unordered_map<char, int> freq;
+	//preenchendo mapa
+	for (char ch : text)
+	{
+		freq[ch]++;
+	}
+	//criacao da arvore e codificando mapa de Huffman
+	priority_queue<NoHF*, vector<NoHF*>, comp> filaPrioridade;
+	for (auto pair : freq)
+	{
+		filaPrioridade.push(getNoHF(pair.first, pair.second, nullptr, nullptr));
+	}
+	while (filaPrioridade.size() != 1)
+	{
+		NoHF* esq = filaPrioridade.top();
+		filaPrioridade.pop();
+		NoHF* dir = filaPrioridade.top();
+		filaPrioridade.pop();
+		int auxSoma = esq->freq + dir->freq;
+		filaPrioridade.push(getNoHF('\0', auxSoma, esq, dir));
+	}
 
-    int i=0;
-    cout <<endl<< "Os codigos dos caracteres sao:" << endl;
-    for(i=0; i<dados->numeroDeCaracteres; i++){
-        cout <<dados->caracteres[i]<<"|"<<dados->codigos[i]<<endl;
-    }
+	NoHF* raiz = filaPrioridade.top();
+	unordered_map<char, string> mapaHuffman;
+	codificar(raiz, STRINGVAZIA, mapaHuffman);
+	//preenchendo struct com dados para futura descompressao
+	for (char ch : text)
+	{
+		dados->dadosComprimidos += mapaHuffman[ch];
+	}
+	dados->raiz = raiz;
+	for (auto pair : mapaHuffman)
+	{
+		dados->caracteres[i] = pair.first;
+		dados->codigos[i] = pair.second;
+		i++;
+	}
+	dados->numeroDeCaracteres = i + 1;
+	//dados->mapaHuffman=mapaHuffman;
 }
 
-void Timer::descomprimir(string *texto,dadosParaDescompressao *dados){
-    cout<<"iniciando descompressao ..."<<endl;
-    string aux=STRINGVAZIA;
-    *texto=STRINGVAZIA;
-    int i;
-    for(i=0;i<dados->dadosComprimidos.size();i++){
-        aux+=dados->dadosComprimidos[i];
-        for(int j=0;j<dados->numeroDeCaracteres;j++){
-            if(aux==dados->codigos[j]){
-                *texto+=dados->caracteres[j];
-				aux=STRINGVAZIA;
-            }
-        }
-    }
-    cout << "descompressao adaptada "<<endl;
+void Timer::codificaNAleatorios(int n, dadosParaDescompressao* dados)
+{
+	fstream saidaAleatorios("aCodificar.txt", ios::trunc | ios::out);
+	vector<Review> reviews;
+	string auxConcatena = STRINGVAZIA;
+	inicializaVetorAleatorio(&reviews, n);
+	for (int i = 0; i < n; i++)
+	{
+		auxConcatena += reviews[i].review_text;
+	}
+	saidaAleatorios << auxConcatena;
+	codificaHuffman(auxConcatena, dados);
+}
+
+void Timer::imprimeCodigosHuffmanAlt(dadosParaDescompressao* dados)
+{
+	int i = 0;
+	cout << endl << "Os codigos dos caracteres sao:" << endl;
+	for (i = 0; i < dados->numeroDeCaracteres; i++)
+	{
+		cout << dados->caracteres[i] << "|" << dados->codigos[i] << endl;
+	}
+}
+
+void Timer::descomprimir(string* texto, dadosParaDescompressao* dados)
+{
+	cout << "iniciando descompressao ..." << endl;
+	string aux = STRINGVAZIA;
+	*texto = STRINGVAZIA;
+	for (int i = 0; i < dados->dadosComprimidos.size(); i++)
+	{
+		aux += dados->dadosComprimidos[i];
+		for (int j = 0; j < dados->numeroDeCaracteres; j++)
+		{
+			if (aux == dados->codigos[j])
+			{
+				*texto += dados->caracteres[j];
+				aux = STRINGVAZIA;
+			}
+		}
+	}
+	cout << "descompressao adaptada " << endl;
+}
+
+void Timer::binDescomprimir2(int n)
+{
+	fstream entradaComprimida("./reviewsComp.bin", ios::in | ios::binary), saidaDescomprimida(
+		        "saidaDescomprimida.txt", ios::trunc | ios::out), aComprimir("aCodificar.txt", ios::in);
+	dadosParaDescompressao dados;
+	int i = 0;
+	string text;
+	while (getline(aComprimir,text))
+	{}
+
+	unordered_map<char, int> freq;
+	//preenchendo mapa
+	for (char ch : text)
+	{
+		freq[ch]++;
+	}
+	//criacao da arvore e codificando mapa de Huffman
+	priority_queue<NoHF*, vector<NoHF*>, comp> filaPrioridade;
+	for (auto pair : freq)
+	{
+		filaPrioridade.push(getNoHF(pair.first, pair.second, nullptr, nullptr));
+	}
+	while (filaPrioridade.size() != 1)
+	{
+		NoHF* esq = filaPrioridade.top();
+		filaPrioridade.pop();
+		NoHF* dir = filaPrioridade.top();
+		filaPrioridade.pop();
+		int auxSoma = esq->freq + dir->freq;
+		filaPrioridade.push(getNoHF('\0', auxSoma, esq, dir));
+	}
+
+	NoHF* raiz = filaPrioridade.top();
+	unordered_map<char, string> mapaHuffman;
+	codificar(raiz, STRINGVAZIA, mapaHuffman);
+	//preenchendo struct com dados para futura descompressao
+	for (char ch : text)
+	{
+		dados.dadosComprimidos += mapaHuffman[ch];
+	}
+	dados.raiz = raiz;
+	for (auto pair : mapaHuffman)
+	{
+		dados.caracteres[i] = pair.first;
+		dados.codigos[i] = pair.second;
+		i++;
+	}
+	dados.numeroDeCaracteres = i + 1;
+
+	string aux;
+	string texto;
+	char c;
+	for (int i = 0; i < dados.dadosComprimidos.size(); i++)
+	{
+		entradaComprimida.get(c);
+		aux += c;
+		for (int j = 0; j < dados.numeroDeCaracteres; j++)
+		{
+			if (aux == dados.codigos[j])
+			{
+				texto += dados.caracteres[j];
+				aux = STRINGVAZIA;
+			}
+		}
+	}
+	saidaDescomprimida << texto;
+
 }

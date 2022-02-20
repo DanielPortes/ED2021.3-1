@@ -52,7 +52,8 @@ public:
 	void codificaNAleatorios(int n,dadosParaDescompressao *dados);
 	void imprimeCodigosHuffmanAlt(dadosParaDescompressao *dados);
 	void descomprimir(string *texto,dadosParaDescompressao *dados);
-
+	void binDescomprimir2(int n);
+	void registraDados(dadosParaDescompressao *dados);
 
 	Timer(const Timer&) = delete;
 
