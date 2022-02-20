@@ -247,5 +247,4 @@ void binDescomprimir(string destinoDescompressao){
         assert(false);
     }
     saidaBinariaDescompressao << destinoDescompressao;
-    cout<<"Arquivo reviewsComp.bin criado."<< endl;
 }

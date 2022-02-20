@@ -49,9 +49,10 @@ public:
 	bool verificaFolha(NoHF* raiz);
 	void codificar(NoHF* raiz, string str, unordered_map<char, string> &mapaHuffman);
 	void codificaHuffman(string text,dadosParaDescompressao *dados);
-	void codificaNAleatorios(int n,dadosParaDescompressao *dados);
+	void codificaNAleatorios(string *auxConcatena, int n,dadosParaDescompressao *dados);
 	void imprimeCodigosHuffmanAlt(dadosParaDescompressao *dados);
 	void descomprimir(string *texto,dadosParaDescompressao *dados);
+	float calcTaxaCompressao (string auxConcatena, dadosParaDescompressao dados);
 
 
 	Timer(const Timer&) = delete;

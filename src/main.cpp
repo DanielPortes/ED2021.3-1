@@ -2,6 +2,8 @@
 //
 #include "Leitura.h"
 #include <iostream>
+#include <cstring>
+#include <math.h>
 #include "Timer.h"
 #include "tabelaHash.h"
 #include "moduloArvoreVP.h"
@@ -138,21 +140,69 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 				break;
 			}
 		case huffman:
+		{
+			cout << "Qual opcao deseja?\n1-Modo de analise\n2-Compressao manual" << endl;
+			int opcaohf = 0;
+			cin >> opcaohf;
+			switch (opcaohf)
 			{
-				dadosParaDescompressao dados;
-				//string aux="gdfkjasdhbfusiyfhbsuiyfgsufygsuyftsfyusgdfvuysdtgfsduytgbsdu7ygsfuysfuysftgsdyfgs7fy";
-				string destinoDescompressao;
-				Timer timer("Huffman");
-				//timer.codificaHuffman(aux,&dados);
-				timer.codificaNAleatorios(1000000,&dados);
-				escreverBinarioHuffman(dados.dadosComprimidos);
-				//cout << dados.dadosComprimidos<<endl;
-				timer.imprimeCodigosHuffmanAlt(&dados);
-				timer.descomprimir(&destinoDescompressao,&dados);
-				//cout << destinoDescompressao<<endl;	
-				binDescomprimir(destinoDescompressao);			
-				break;
+				case 1:
+				{
+					int numCompressoes[3] = { 10000, 100000, 1000000};
+					for (int i = 0; i < 3; i++)
+					{
+						float somaTaxas = 0.0;
+						for (int j = 0; j < 3; j++)
+						{
+							cout << "Iteracao " << j+1<<" com " << numCompressoes[i]<<" reviews."<< endl;
+							int numReviews = numCompressoes[i];
+							dadosParaDescompressao dados;
+							string destinoDescompressao;
+							string auxConcatena="";
+							Timer timer("Huffman");
+							timer.codificaNAleatorios(&auxConcatena, numReviews,&dados);
+							escreverBinarioHuffman(dados.dadosComprimidos);
+							cout << "Dados comprimidos com sucesso!"<<endl;
+							timer.imprimeCodigosHuffmanAlt(&dados);
+							float taxaCompressao=0.0;
+							taxaCompressao = timer.calcTaxaCompressao(auxConcatena, dados);
+							somaTaxas += taxaCompressao;
+							timer.descomprimir(&destinoDescompressao,&dados);
+							binDescomprimir(destinoDescompressao);
+						}
+						float mediaTaxas = somaTaxas/3;
+						cout<< "Media taxas de compressao para N= "<<numCompressoes[i]<< " :"<<mediaTaxas<<endl;
+					}
+					break;
+				}
+				case 2:
+				{
+					int numReviews=0;
+					cout << "Informe a quantidade de reviews a serem comprimidas: " << endl;
+					cin >> numReviews;
+					dadosParaDescompressao dados;
+					string destinoDescompressao;
+					string auxConcatena="";
+					Timer timer("Huffman");
+					timer.codificaNAleatorios(&auxConcatena, numReviews,&dados);
+					escreverBinarioHuffman(dados.dadosComprimidos);
+					cout << "Dados comprimidos com sucesso!"<<endl;
+					timer.imprimeCodigosHuffmanAlt(&dados);
+					float taxaCompressao=0.0;
+					taxaCompressao = timer.calcTaxaCompressao(auxConcatena, dados);
+					timer.descomprimir(&destinoDescompressao,&dados);
+					binDescomprimir(destinoDescompressao);	
+					cout<<"Arquivo reviewsOrig.bin com o resultado da descompresao criado."<< endl;		
+					break;
+				}
+				default:
+					{
+						cout << "Opcao invalida!" << endl;
+						break;
+					}
 			}
+			break;
+		}
 		case sair:
 			{
 				return;
