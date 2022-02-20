@@ -14,11 +14,12 @@ class Timer
 private:
 	string m_legenda;
 	time_point<high_resolution_clock> m_tempoInicio;
-	long long m_duracao;
 	unsigned long m_swaps;
 	unsigned long m_comparacoes;
 
 public:
+	long long m_duracao;
+
 	Timer(string legenda);
 
 	~Timer();

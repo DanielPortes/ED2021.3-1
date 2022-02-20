@@ -148,12 +148,19 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
                 {
                     case 1:
                     {
+                         fstream saidaAnalise("saida.txt", ios::out);
+                         saidaAnalise << "\n\n\t\t Resumo analise de compressao: \n\n";
+
                         int numCompressoes[3] = { 10000, 100000, 1000000};
                         for (int i = 0; i < 3; i++)
                         {
+                            Timer media("Huffman MEDIA 3 rodadas");
+
+                            saidaAnalise << "\n\tTAMANHO: " << numCompressoes[i] << endl;
                             float somaTaxas = 0.0;
                             for (int j = 0; j < 3; j++)
                             {
+                                saidaAnalise << "\nrodada: " << (j + 1) << endl;
                                 cout << "Iteracao " << j+1<<" com " << numCompressoes[i]<<" reviews."<< endl;
                                 int numReviews = numCompressoes[i];
                                 dadosParaDescompressao dados;
@@ -162,16 +169,22 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
                                 Timer timer("Huffman");
                                 timer.codificaNAleatorios(&auxConcatena, numReviews,&dados);
                                 escreverBinarioHuffman(dados.dadosComprimidos);
+
+                                timer.Stop();
+                                saidaAnalise << "tempo de compressao: " << ": " << timer.m_duracao << "us (" << timer.m_duracao * 0.001 << ")" << endl;
                                 cout << "Dados comprimidos com sucesso!"<<endl;
-                                timer.imprimeCodigosHuffmanAlt(&dados);
+
                                 float taxaCompressao=0.0;
                                 taxaCompressao = timer.calcTaxaCompressao(auxConcatena, dados);
                                 somaTaxas += taxaCompressao;
-                                timer.descomprimir(&destinoDescompressao,&dados);
-                                binDescomprimir(destinoDescompressao);
+                                saidaAnalise << "taxa de compressao: " << taxaCompressao << endl;
                             }
+                            media.Stop();
+                            saidaAnalise << "tempo de compressao das 3 rodadas: " << ": " << media.m_duracao /3 << "us (" << (media.m_duracao * 0.001) /3 << ")\n" ;
+                            cout << "Dados comprimidos com sucesso!"<<endl;
+
                             float mediaTaxas = somaTaxas/3;
-                            cout<< "Media taxas de compressao para N= "<<numCompressoes[i]<< " :"<<mediaTaxas<<endl;
+                            saidaAnalise << "Media taxas de compressao para N= " <<numCompressoes[i] << " :"<<mediaTaxas<<endl;
                         }
                         break;
                     }
@@ -221,8 +234,8 @@ int main(int argc, char* argv[])
 
 	vector<Review> reviews;
 
-	menu(argv[1], reviews);
-	// menu(arquivo_path, reviews);
+	// menu(argv[1], reviews);
+	 menu(arquivo_path, reviews);
 
 	return 0;
 }

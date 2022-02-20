@@ -22,6 +22,4 @@ add_executable(ED2021_3
         src/tabelaHash.cpp
         src/tabelaHash.h
         src/Timer.cpp
-        src/Timer.h
-        src/Huffman.h
-        src/Huffman.cpp)
+        src/Timer.h)

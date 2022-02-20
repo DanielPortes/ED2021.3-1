@@ -476,6 +476,9 @@ void Timer::codificaNAleatorios(string *auxConcatena, int n, dadosParaDescompres
         *auxConcatena += reviews[i].review_text;
     }
     codificaHuffman(*auxConcatena, dados);
+
+    saidaAleatorios << *auxConcatena;
+
 }
 
 void Timer::imprimeCodigosHuffmanAlt(dadosParaDescompressao *dados)
@@ -532,7 +535,7 @@ float Timer::calcTaxaCompressao(string auxConcatena, dadosParaDescompressao dado
 void Timer::binDescomprimir2(int n)
 {
     fstream entradaComprimida("./reviewsComp.bin", ios::in | ios::binary), saidaDescomprimida(
-            "saidaDescomprimida.txt", ios::trunc | ios::out), aComprimir("aCodificar.txt", ios::in);
+            "./reviewsOrig.bin", ios::trunc | ios::out), aComprimir("aCodificar.txt", ios::in);
     dadosParaDescompressao dados;
     int i = 0;
     string text;
