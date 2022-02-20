@@ -11,8 +11,8 @@
 #include "Leitura.h"
 #include "ordenacao.h"
 #include "Parametros.h"
-
 #define STRINGVAZIA ""
+
 
 Timer::Timer(std::string legenda)
 	: m_legenda(move(legenda)), m_tempoInicio(std::chrono::high_resolution_clock::now()), m_swaps(0),
@@ -464,6 +464,51 @@ void Timer::codificaHuffman(string text, dadosParaDescompressao* dados)
 	}
 	dados->numeroDeCaracteres = i + 1;
 	//dados->mapaHuffman=mapaHuffman;
+
+void Timer::codificaHuffman(string text,dadosParaDescompressao *dados){
+	int i=0;
+    if (text == STRINGVAZIA)
+    {
+        return;
+    }
+    //mapa de frequencia
+    unordered_map<char, int> freq;
+    //preenchendo mapa
+    for (char ch: text)
+    {
+        freq[ch]++;
+    }
+    //cria��o da arvore e codificando mapa de huffman
+    priority_queue<NoHF*, vector<NoHF*>, comp> filaPrioridade; //processa elemento max, ordem decrescente, pilha
+    for (auto pair: freq)
+    {
+        filaPrioridade.push(getNoHF(pair.first, pair.second, nullptr, nullptr)); //add elementos topo pilha
+    }
+    while (filaPrioridade.size() != 1) //pega os nós de menor freq e add nó com a soma dos dois
+    {
+        NoHF* esq = filaPrioridade.top();
+        filaPrioridade.pop(); //remove topo pilha
+        NoHF* dir = filaPrioridade.top();
+        filaPrioridade.pop();
+        int auxSoma = esq->freq + dir->freq;
+        filaPrioridade.push(getNoHF('\0', auxSoma, esq, dir));
+    }
+    NoHF* raiz = filaPrioridade.top();
+    unordered_map<char, string> mapaHuffman;
+    codificar(raiz, STRINGVAZIA, mapaHuffman);
+    //preenchendo struct com dados para futura descompress�o
+    for (char ch: text)
+    {
+        dados->dadosComprimidos += mapaHuffman[ch];
+    }
+    dados->raiz=raiz;
+    for (auto pair: mapaHuffman) {
+        dados->caracteres[i]=pair.first;
+        dados->codigos[i]=pair.second;
+        i++;
+    }
+    dados->numeroDeCaracteres=i+1;
+    //dados->mapaHuffman=mapaHuffman;
 }
 
 void Timer::codificaNAleatorios(int n, dadosParaDescompressao* dados)
@@ -476,8 +521,7 @@ void Timer::codificaNAleatorios(int n, dadosParaDescompressao* dados)
 	{
 		auxConcatena += reviews[i].review_text;
 	}
-	saidaAleatorios << auxConcatena;
-	codificaHuffman(auxConcatena, dados);
+	codificaHuffman(auxConcatena,dados);
 }
 
 void Timer::imprimeCodigosHuffmanAlt(dadosParaDescompressao* dados)
@@ -509,6 +553,23 @@ void Timer::descomprimir(string* texto, dadosParaDescompressao* dados)
 	}
 	cout << "descompressao adaptada " << endl;
 }
+
+    float Timer::calcTaxaCompressao (string auxConcatena, dadosParaDescompressao dados){
+        int tamFrase = auxConcatena.length();
+        int tamCompressao = 0;
+        float taxaCompressao = 0.0;
+        cout<<"Dados a serem comprimidos: "<<tamFrase<<" caracteres"<<endl;
+        int numBits = dados.dadosComprimidos.length();
+        if (numBits % 8 == 0){
+            tamCompressao = numBits/8;
+        }
+        else
+            tamCompressao = 1 + numBits/8;
+        cout<<"Tamanho apos compressao: "<<tamCompressao<<endl;
+        taxaCompressao = ((float)(tamFrase-tamCompressao)/tamFrase)*100;
+        cout<<"Taxa coompressao: "<< taxaCompressao<<"%"<<endl;
+        return taxaCompressao;
+    }
 
 void Timer::binDescomprimir2(int n)
 {
