@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.16)
-project(DCC012)
+project(ED2021_3)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 
 include_directories(src)
 
-add_executable(DCC012
+add_executable(ED2021_3
         src/ArvoreB.cpp
         src/ArvoreB.h
         src/arvoreVP.cpp
@@ -22,4 +22,6 @@ add_executable(DCC012
         src/tabelaHash.cpp
         src/tabelaHash.h
         src/Timer.cpp
-        src/Timer.h)
+        src/Timer.h
+        src/Huffman.h
+        src/Huffman.cpp)

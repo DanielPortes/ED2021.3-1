@@ -5,6 +5,7 @@
 #include "Timer.h"
 #include "tabelaHash.h"
 #include "moduloArvoreVP.h"
+#include "Huffman.h"
 
 using namespace std;
 
@@ -18,7 +19,7 @@ enum EscolhasChamada
 	arvoreVerPre = 'v',
 	BTree = 'b',
 	tabela_Hash = 'h',
-	huffman = 'c'
+	huff = 'c'
 };
 
 void menu(const string& caminhoEntrada, vector<Review>& reviews)
@@ -33,7 +34,7 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 		cout << "\tDigite 'h' para: tabelaHash() \n";
 		cout << "\tDigite 'v' para: arvoreVP() \n";
 		cout << "\tDigite 'b' para: BTree() \n";
-		cout << "\tDigite 'c' para: Huffman \n";
+		cout << "\tDigite 'c' para: huffman \n";
 		cout << "\tDigite 't' para: Modulo de teste \n";
 		cout << "\tDigite 's' para sair " << endl;
 
@@ -137,20 +138,23 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 
 				break;
 			}
-		case huffman:
+		case huff:
 			{
 				dadosParaDescompressao dados;
-				//string aux="gdfkjasdhbfusiyfhbsuiyfgsufygsuyftsfyusgdfvuysdtgfsduytgbsdu7ygsfuysfuysftgsdyfgs7fy";
+				string aux="aba";
 				string destinoDescompressao;
 				Timer timer("Huffman");
-				//timer.codificaHuffman(aux,&dados);
-				timer.codificaNAleatorios(1000000,&dados);
+				// timer.codificaHuffman(aux,&dados);
+				timer.codificaNAleatorios(100,&dados);
 				escreverBinarioHuffman(dados.dadosComprimidos);
 				//cout << dados.dadosComprimidos<<endl;
 				timer.imprimeCodigosHuffmanAlt(&dados);
 				timer.descomprimir(&destinoDescompressao,&dados);
 				//cout << destinoDescompressao<<endl;	
-				binDescomprimir(destinoDescompressao);			
+				timer.binDescomprimir2(100);
+
+
+
 				break;
 			}
 		case sair:
@@ -168,11 +172,17 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
 int main(int argc, char* argv[])
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
-
 	vector<Review> reviews;
 
-	menu(argv[1], reviews);
-	// menu(arquivo_path, reviews);
+//    Huffman h("reviewsToCompress.txt", "saidaCompi.bin");
+//    h.create_pq();
+//    h.create_huffman_tree();
+//    h.calculate_huffman_codes();
+//    h.coding_save();
+//    cout << endl;
+
+	// menu(argv[1], reviews);
+	menu(arquivo_path, reviews);
 
 	return 0;
 }
