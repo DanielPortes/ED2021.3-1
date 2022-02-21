@@ -532,7 +532,9 @@ float Timer::calcTaxaCompressao(string auxConcatena, dadosParaDescompressao dado
     return taxaCompressao;
 }
 
-void Timer::binDescomprimir2(int n)
+
+// funcao que vai remontar a arvore e ler os dados do arquivo binario comprimido
+void Timer::binDescomprimir(int n)
 {
     fstream entradaComprimida("./reviewsComp.bin", ios::in | ios::binary), saidaDescomprimida(
             "./reviewsOrig.bin", ios::trunc | ios::out), aComprimir("aCodificar.txt", ios::in);

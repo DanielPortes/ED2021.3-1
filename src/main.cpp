@@ -234,8 +234,8 @@ int main(int argc, char* argv[])
 
 	vector<Review> reviews;
 
-	// menu(argv[1], reviews);
-	 menu(arquivo_path, reviews);
+	menu(argv[1], reviews);
+	// menu(arquivo_path, reviews);
 
 	return 0;
 }

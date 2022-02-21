@@ -55,7 +55,7 @@ public:
 	void descomprimir(string *texto,dadosParaDescompressao *dados);
 	float calcTaxaCompressao (string auxConcatena, dadosParaDescompressao dados);
 
-	void binDescomprimir2(int n);
+	void binDescomprimir(int n);
 	void registraDados(dadosParaDescompressao *dados);
 
 	Timer(const Timer&) = delete;
