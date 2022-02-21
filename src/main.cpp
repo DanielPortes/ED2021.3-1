@@ -148,7 +148,7 @@ void menu(const string& caminhoEntrada, vector<Review>& reviews)
                 {
                     case 1:
                     {
-                         fstream saidaAnalise("saida.txt", ios::out);
+                         fstream saidaAnalise("saida.txt", ios::out | ios::app);
                          saidaAnalise << "\n\n\t\t Resumo analise de compressao: \n\n";
 
                         int numCompressoes[3] = { 10000, 100000, 1000000};
