@@ -18,7 +18,7 @@ private:
 	unsigned long m_comparacoes;
 
 public:
-	long long m_duracao;
+	double m_duracao;
 
 	Timer(string legenda);
 

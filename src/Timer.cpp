@@ -63,6 +63,7 @@ void Timer::benchHeapSort(int trials, const string &saidaPath)
         assert(false);
     }
     int montanteSwaps = 0, montanteComparacoes = 0;
+    double montanteTempo = 0.0;
     string linha;
     vector<Review> reviews;
     while (getline(inputFile, linha))
@@ -78,6 +79,7 @@ void Timer::benchHeapSort(int trials, const string &saidaPath)
                 Timer cronometro(msg.str());
                 heapSort(reviews, reviews.size(), this);
                 cronometro.Stop();
+                montanteTempo += cronometro.m_duracao;
                 saidaTxt << "\tTEMPO: " << cronometro.m_legenda << ": " << cronometro.m_duracao << "us (" << cronometro.
                         m_duracao * 0.001 << "ms)\n";
             }
@@ -88,13 +90,13 @@ void Timer::benchHeapSort(int trials, const string &saidaPath)
             zeraMedicoes();
         }
         this->Stop();
-        saidaTxt << "\nresumo algoritmo QuickSort para size = " << reviews.size() << endl;
+        saidaTxt << "\nresumo algoritmo HeapSort para size = " << reviews.size() << endl;
         saidaTxt << "\tnumero de trials:" << trials << endl;
         saidaTxt << "\tnumero de comparacoes medias:" << montanteComparacoes / trials << endl;
         saidaTxt << "\tnumero de trocas medias:" << montanteSwaps / trials << endl;
-        saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001
-                 <<
-                 "ms)\n";
+        saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001 << "ms)";
+        saidaTxt << "\t\nTEMPO MEDIO: " << this->m_legenda << ": " << (montanteTempo / trials) << "us (" << (montanteTempo * 0.001) / trials
+                 << "ms)\n";
         saidaTxt << endl << endl << endl;
         zeraMedicoes();
     }
@@ -110,6 +112,8 @@ void Timer::ModuloTesteHeapSort(int trials, const string &saidaPath)
         assert(false);
     }
     int montanteSwaps = 0, montanteComparacoes = 0;
+    double montanteTempo = 0.0;
+
     vector<Review> reviews(100);
     for (int i = 0; i < trials; ++i)
     {
@@ -120,6 +124,7 @@ void Timer::ModuloTesteHeapSort(int trials, const string &saidaPath)
             Timer cronometro(msg.str());
             heapSort(reviews, reviews.size(), this);
             cronometro.Stop();
+            montanteTempo += cronometro.m_duracao;
             saidaTxt << "\tTEMPO: " << cronometro.m_legenda << ": " << cronometro.m_duracao << "us (" << cronometro.
                     m_duracao * 0.001 << "ms)\n";
         }
@@ -131,12 +136,14 @@ void Timer::ModuloTesteHeapSort(int trials, const string &saidaPath)
         escreverSaidaTxt(saidaTxt, reviews);
     }
     this->Stop();
-    saidaTxt << "\nresumo algoritmo QuickSort para size = " << reviews.size() << endl;
+    saidaTxt << "\nresumo algoritmo HeapSort para size = " << reviews.size() << endl;
     saidaTxt << "\tnumero de trials:" << trials << endl;
     saidaTxt << "\tnumero de comparacoes medias:" << montanteComparacoes / trials << endl;
     saidaTxt << "\tnumero de trocas medias:" << montanteSwaps / trials << endl;
     saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001 <<
              "ms)\n";
+    saidaTxt << "\tTEMPO MEDIO: " << this->m_legenda << ": " << (montanteTempo / trials) << "us (" << (montanteTempo * 0.001) / trials
+        << "ms)\n";
     saidaTxt << endl << endl << endl;
     zeraMedicoes();
 }
@@ -151,6 +158,8 @@ void Timer::ModuloTesteQuickSort(int trials, const string &saidaPath)
         assert(false);
     }
     int montanteSwaps = 0, montanteComparacoes = 0;
+    double montanteTempo = 0.0;
+
     vector<Review> reviews(100);
     for (int i = 0; i < trials; ++i)
     {
@@ -161,6 +170,8 @@ void Timer::ModuloTesteQuickSort(int trials, const string &saidaPath)
             Timer cronometro(msg.str());
             quickSort(reviews, 0, reviews.size() - 1, this);
             cronometro.Stop();
+            montanteTempo += cronometro.m_duracao;
+
             saidaTxt << "\tTEMPO: " << cronometro.m_legenda << ": " << cronometro.m_duracao << "us (" << cronometro.
                     m_duracao * 0.001 << "ms)\n";
         }
@@ -178,6 +189,8 @@ void Timer::ModuloTesteQuickSort(int trials, const string &saidaPath)
     saidaTxt << "\tnumero de trocas medias:" << montanteSwaps / trials << endl;
     saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001 <<
              "ms)\n";
+    saidaTxt << "\tTEMPO MEDIO: " << this->m_legenda << ": " << (montanteTempo / trials) << "us (" << (montanteTempo * 0.001) / trials
+        << "ms)\n";
     saidaTxt << endl << endl << endl;
     zeraMedicoes();
 }
@@ -192,6 +205,8 @@ void Timer::ModuloTesteCombSort(int trials, const string &saidaPath)
         assert(false);
     }
     int montanteSwaps = 0, montanteComparacoes = 0;
+    double montanteTempo = 0.0;
+
     vector<Review> reviews(100);
     for (int i = 0; i < trials; ++i)
     {
@@ -202,6 +217,8 @@ void Timer::ModuloTesteCombSort(int trials, const string &saidaPath)
             Timer cronometro(msg.str());
             combSort(reviews, reviews.size(), this);
             cronometro.Stop();
+            montanteTempo += cronometro.m_duracao;
+
             saidaTxt << "\tTEMPO: " << cronometro.m_legenda << ": " << cronometro.m_duracao << "us (" << cronometro.
                     m_duracao * 0.001 << "ms)\n";
         }
@@ -213,12 +230,14 @@ void Timer::ModuloTesteCombSort(int trials, const string &saidaPath)
         escreverSaidaTxt(saidaTxt, reviews);
     }
     this->Stop();
-    saidaTxt << "\nresumo algoritmo QuickSort para size = " << reviews.size() << endl;
+    saidaTxt << "\nresumo algoritmo CombSort para size = " << reviews.size() << endl;
     saidaTxt << "\tnumero de trials:" << trials << endl;
     saidaTxt << "\tnumero de comparacoes medias:" << montanteComparacoes / trials << endl;
     saidaTxt << "\tnumero de trocas medias:" << montanteSwaps / trials << endl;
     saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001 <<
-             "ms)\n";
+             "ms)";
+    saidaTxt << "\t\nTEMPO MEDIO: " << this->m_legenda << ": " << (montanteTempo / trials) << "us (" << (montanteTempo * 0.001) / trials
+        << "ms)\n";
     saidaTxt << endl << endl << endl;
     zeraMedicoes();
 }
@@ -234,6 +253,8 @@ void Timer::benchQuickSort(int trials, const string &saidaPath)
     }
 
     int montanteSwaps = 0, montanteComparacoes = 0;
+    double montanteTempo = 0.0;
+
     string linha;
     vector<Review> reviews;
     while (getline(inputFile, linha))
@@ -249,6 +270,8 @@ void Timer::benchQuickSort(int trials, const string &saidaPath)
                 Timer cronometro(msg.str());
                 quickSort(reviews, 0, reviews.size() - 1, this);
                 cronometro.Stop();
+                montanteTempo += cronometro.m_duracao;
+
                 saidaTxt << "\tTEMPO: " << cronometro.m_legenda << ": " << cronometro.m_duracao << "us (" << cronometro.
                         m_duracao * 0.001 << "ms)\n";
             }
@@ -266,6 +289,8 @@ void Timer::benchQuickSort(int trials, const string &saidaPath)
         saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001
                  <<
                  "ms)\n";
+        saidaTxt << "\tTEMPO MEDIO: " << this->m_legenda << ": " << (montanteTempo / trials) << "us (" << (montanteTempo * 0.001) / trials
+            << "ms)\n";
         saidaTxt << endl << endl << endl;
         zeraMedicoes();
     }
@@ -282,6 +307,8 @@ void Timer::benchCombSort(int trials, const string &saidaPath)
     }
 
     int montanteSwaps = 0, montanteComparacoes = 0;
+    double montanteTempo = 0.0;
+
     string linha;
     vector<Review> reviews;
     while (getline(inputFile, linha))
@@ -297,6 +324,8 @@ void Timer::benchCombSort(int trials, const string &saidaPath)
                 Timer cronometro(msg.str());
                 combSort(reviews, reviews.size(), this);
                 cronometro.Stop();
+                montanteTempo += cronometro.m_duracao;
+
                 saidaTxt << "\tTEMPO: " << cronometro.m_legenda << ": " << cronometro.m_duracao << "us (" << cronometro.
                         m_duracao * 0.001 << "ms)\n";
             }
@@ -307,13 +336,15 @@ void Timer::benchCombSort(int trials, const string &saidaPath)
             zeraMedicoes();
         }
         this->Stop();
-        saidaTxt << "\nresumo algoritmo QuickSort para size = " << reviews.size() << endl;
+        saidaTxt << "\nresumo algoritmo CombSort para size = " << reviews.size() << endl;
         saidaTxt << "\tnumero de trials:" << trials << endl;
         saidaTxt << "\tnumero de comparacoes medias:" << montanteComparacoes / trials << endl;
         saidaTxt << "\tnumero de trocas medias:" << montanteSwaps / trials << endl;
         saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001
                  <<
                  "ms)\n";
+        saidaTxt << "\tTEMPO MEDIO: " << this->m_legenda << ": " << (montanteTempo / trials) << "us (" << (montanteTempo * 0.001) / trials
+            << "ms)\n";
         saidaTxt << endl << endl << endl;
         zeraMedicoes();
     }
@@ -327,6 +358,7 @@ void Timer::benchBTree(int trials, int ordem, const string &saidaPath)
     unsigned int montanteComparacoesBusca = 0;
     unsigned int montanteTempoInsercao = 0;
     unsigned int montanteTempoBusca = 0;
+    double montanteTempo = 0.0;
 
     int qtd = 1'000'000;
     for (int i = 0; i < trials; ++i)
@@ -338,6 +370,8 @@ void Timer::benchBTree(int trials, int ordem, const string &saidaPath)
             Timer cronometro(msg.str());
             arvoreB.popularArvoreAleatoriamente(&cronometro, qtd);
             cronometro.Stop();
+            montanteTempo += cronometro.m_duracao;
+
             saidaTxt << "TEMPO: " << cronometro.m_legenda << ": " << cronometro.m_duracao << "us (" << cronometro.
                     m_duracao * 0.001 << "ms)\n";
             montanteComparacoesInsercao += cronometro.m_comparacoes;
@@ -370,6 +404,8 @@ void Timer::benchBTree(int trials, int ordem, const string &saidaPath)
     saidaTxt << "\ttempo medio de busca:" << montanteTempoBusca / trials * 0.001 << " ms\n";
     saidaTxt << "\tTEMPO TOTAL: " << this->m_legenda << ": " << this->m_duracao << "us (" << this->m_duracao * 0.001 <<
              "ms)\n" << endl << endl << endl;
+    saidaTxt << "\t\nTEMPO MEDIO: " << this->m_legenda << ": " << (montanteTempo / trials) << "us (" << (montanteTempo * 0.001) / trials
+        << "ms)\n";
     zeraMedicoes();
 }
 
