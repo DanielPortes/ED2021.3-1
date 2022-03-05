@@ -8,32 +8,41 @@ implementar b tree e red black tree
 
 implementar compressao de huffman
 
+## INPUT
+
+Arquivo de entrada pode ser encontrado no link:
+https://www.kaggle.com/shivamb/35-million-tiktok-mobile-app-reviews
 
 ## BUILD 1
 
-> colocar o arquivo de entrada na pasta "src",usar a seguinte linha via terminal na pasta para compilar:
->```
->	g++ -O3 *.cpp* -o main -g
->	```
->  e a seguinte linha para rodar:
->  ```
->	./main <entrada do arquivo CSV> 
->
->  exemplo de linha para execução:
->    ./main t.csv
+colocar o arquivo de entrada na pasta "src",usar a seguinte linha via terminal na pasta para compilar:
 
+```
+++ -O3 *.cpp -o main -g
+```
+
+e a seguinte linha para rodar:
+```
+./main <entrada do arquivo CSV> 
+```
+exemplo de linha para execução:
+```
+./main tiktok_reviews.csv
+```
 ## BUILD ALTERNATIVA 2
 
-> PRE REQUISITOS:
+PRE REQUISITOS:
 > CMAKE
 
 ## PARA EXECUTAR
 
-> ABRA O TERMINAL NA PASTA SRC E EXECUTE:
+ABRA O TERMINAL NA PASTA SRC E EXECUTE:
 
 ```
 cmake ../.
-make && ./ED2021 t.csv
+```
+```
+make && ./ED2021 <entrada do arquivo CSV> 
 ```
 
 
